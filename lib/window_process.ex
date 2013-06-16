@@ -1,11 +1,14 @@
 defmodule WindowProcess do
   
-  def start(frame, pid//self()) do
-    spawn WindowProcess, :start_proc, [frame, pid]
+  @doc"Starts new GUI, which sends events to process pid."
+  def start(gui, pid//self()) do
+    spawn WindowProcess, :gui_process, [gui, pid]
   end
 
-  def start_proc(frame, pid) do
+  @doc"GUI process."
+  def gui_process(frame, pid) do
     :wx.new
+    #compile records into wxObjects
     window=Compiler.compile(frame, pid)
     [{_id, data}|_tail]=window
     :wxFrame.show Keyword.get(data, :wxobject)
@@ -13,6 +16,7 @@ defmodule WindowProcess do
     :wx.destroy
   end
 
+  # Receives message, sends response and calls itself.
   defp rec(window, pid) do
     receive do
       :destroy->
@@ -26,11 +30,13 @@ defmodule WindowProcess do
     end
   end
 
+  # Send response to message func for object id with params to pid.
   defp send(window, pid, id, func, params) do
     [type: type, wxobject: object]=Keyword.get window, id
     pid<-{self(), id, func, respond(type, object, func, params)}
   end
 
+  
   defp respond(:button, object, func, params), do: WindowProcess.Button.respond object, func, params
   defp respond(:frame, object, func, params), do: WindowProcess.Frame.respond object, func, params
   defp respond(type, _object, _func, _params), do: raise {:uknown_type, type}

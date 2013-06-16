@@ -1,5 +1,10 @@
 defmodule Sigui do
 
+  @moduledoc"""
+    Provides basic functions for working with GUI.
+  """
+
+  @doc"Sends message to GUI and returns response to this message."
   def send(pid, id, func, options//[]) do
     pid <- {self(), id, func, options}
     receive do
@@ -9,17 +14,19 @@ defmodule Sigui do
 
   defp prepend_get(s), do: 'get_'++s
 
-  def get(pid, id, func, options//[]) do
-    send pid, id, (func |> atom_to_list |> prepend_get |> list_to_atom), options
+  @doc"Gets value of property of object id in GUI pid"
+  def get(pid, id, property, options//[]) do
+    send pid, id, (property |> atom_to_list |> prepend_get |> list_to_atom), options
   end
 
   defp prepend_set(s), do: 'set_'++s
 
-  def set(pid, id, func, options//[]) do
-    send pid, id, (func |> atom_to_list |> prepend_set |> list_to_atom), options
+  @doc"Sets value of property of object id in GUI pid"
+  def set(pid, id, property, options//[]) do
+    send pid, id, (property |> atom_to_list |> prepend_set |> list_to_atom), options
   end
 
-
+  @doc"Receives one message and returns it."
   def rec() do
     receive do
       a->a
