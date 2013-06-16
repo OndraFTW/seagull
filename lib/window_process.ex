@@ -27,13 +27,13 @@ defmodule WindowProcess do
   end
 
   defp send(window, pid, id, func, params) do
-    {type, object}=Keyword.get window, id
-    pid<-{self(), id, func, get(type, object, func, params)}
+    [type: type, wxobject: object]=Keyword.get window, id
+    pid<-{self(), id, func, respond(type, object, func, params)}
   end
 
-  defp get(:button, object, func, params), do: WindowProcess.Button.get object, func, params
-  defp get(:frame, object, func, params), do: WindowProcess.Frame.get object, func, params
-  defp get(_type, _object, _func, _params), do: :uknown_type
+  defp respond(:button, object, func, params), do: WindowProcess.Button.respond object, func, params
+  defp respond(:frame, object, func, params), do: WindowProcess.Frame.get object, func, params
+  defp respond(_type, _object, _func, _params), do: :uknown_type
 
   def selfdestruct(), do: self() <- :destroy
 
