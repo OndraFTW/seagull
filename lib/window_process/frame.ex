@@ -1,7 +1,5 @@
 defmodule WindowProcess.Frame do
 
-  def get(_object, _func, _params) do
-    :uknown_function
-  end
+  def respond(object, func, options), do: WindowProcess.TopLevelWindow.respond object, func, options
 
 end

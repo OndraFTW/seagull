@@ -32,8 +32,8 @@ defmodule WindowProcess do
   end
 
   defp respond(:button, object, func, params), do: WindowProcess.Button.respond object, func, params
-  defp respond(:frame, object, func, params), do: WindowProcess.Frame.get object, func, params
-  defp respond(_type, _object, _func, _params), do: :uknown_type
+  defp respond(:frame, object, func, params), do: WindowProcess.Frame.respond object, func, params
+  defp respond(type, _object, _func, _params), do: raise {:uknown_type, type}
 
   def selfdestruct(), do: self() <- :destroy
 

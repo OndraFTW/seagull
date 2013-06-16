@@ -14,6 +14,7 @@ defmodule Compiler.Button do
   defp divide_options([{:label, label}|tail], pre, post), do: divide_options tail, [{:label, label}|pre], post
   defp divide_options([{:disabled, true}|tail], pre, post), do: divide_options tail, pre, [:disabled|post]
   defp divide_options([{:default, true}|tail], pre, post), do: divide_options tail, pre, [:default|post]
+  defp divide_options([{:position, {w, h}}|tail], pre, post), do: divide_options tail, [{:pos, {w, h}}|pre], post
   defp divide_options([{:size, {w, h}}|tail], pre, post), do: divide_options tail, [{:size, {w, h}}|pre], post
   defp divide_options([{:react, events}|tail], pre, post), do: divide_options tail, pre, [{:react, events}|post]
   defp divide_options([{:align, style}|tail], pre, post) do
