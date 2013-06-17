@@ -1,8 +1,8 @@
-defmodule Sigui.Mixfile do
+defmodule Seagull.Mixfile do
   use Mix.Project
 
   def project do
-    [ app: :sigui,
+    [ app: :seagull,
       version: "0.0.1",
       deps: deps ]
   end

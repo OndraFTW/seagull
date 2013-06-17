@@ -17,27 +17,40 @@ defmodule Demo do
         end
         box :horizontal do
           button :H, label: 'This button\nreacts on clicks.', react: [:click]
-          button :I, label: 'This button reacts\non mouse down clicks.', react: [:mouse_left_down, :mouse_right_down, :mouse_middle_down]
+          button :I, label: 'This button reacts\non mouse down and up clicks.', react: [:mouse_left_down, :mouse_right_down,
+            :mouse_middle_down, :mouse_left_up, :mouse_right_up, :mouse_middle_up]
+          button :J, label: 'This button reacts\non mouse entering\nand leaving it.', react: [:mouse_enter, :mouse_leave]
+          button :K, label: 'This button counts\nclicks: 0', react: [:click]
         end
       end
     end
 
     pid=WindowProcess.start f
     
-    button_reaction pid
+    button_reaction pid, 0
 
   end
 
-  defp button_reaction(pid) do
+  defp button_reaction(pid, count) do
     cont=receive do
-      {^pid, :f, :close}->IO.puts 'You closed frame.';pid<-:destroy;false
-      {^pid, :f, :mouse_left_down}->IO.puts "You clicked on frame.";true
-      {^pid, :H, :click}->IO.puts 'You clicked on button.';true
-      {^pid, :I, :mouse_left_down}->IO.puts 'Your left mouse button is down.';true
-      {^pid, :I, :mouse_right_down}->IO.puts 'Your right mouse button is down.';true
-      {^pid, :I, :mouse_middle_down}->IO.puts 'Your middle mouse button is down.';true
+      {^pid, :f, :close}->IO.puts "You closed frame.";pid<-:destroy;false
+      {^pid, :f, :mouse_left_down, {x, y}}->IO.puts "You clicked on frame on position [#{x}, #{y}].";true
+      {^pid, :H, :click}->IO.puts "You clicked on button.";true
+      {^pid, :I, :mouse_left_down, {x, y}}->IO.puts "Your left mouse button is down on position [#{x}, #{y}].";true
+      {^pid, :I, :mouse_right_down, {x, y}}->IO.puts "Your right mouse button is down on position [#{x}, #{y}].";true
+      {^pid, :I, :mouse_middle_down, {x, y}}->IO.puts "Your middle mouse button is down on position [#{x}, #{y}].";true
+      {^pid, :I, :mouse_left_up, {x, y}}->IO.puts "Your left mouse button is up on position [#{x}, #{y}].";true
+      {^pid, :I, :mouse_right_up, {x, y}}->IO.puts "Your right mouse button is up on position [#{x}, #{y}].";true
+      {^pid, :I, :mouse_middle_up, {x, y}}->IO.puts "Your middle mouse button is up on position [#{x}, #{y}].";true
+      {^pid, :J, :mouse_enter, {x, y}}->IO.puts "Your mouse entered button on position [#{x}, #{y}]";true
+      {^pid, :J, :mouse_leave, {x, y}}->IO.puts "Your mouse left button on position [#{x}, #{y}]";true
+      {^pid, :K, :click}->
+        count=count+1
+        label=Seagull.get(pid, :K, :label) |> list_to_binary
+        label=Regex.replace(%r/([0-9]+)/, label, integer_to_binary(count)) |> binary_to_list
+        Seagull.set pid, :K, :label, label
     end
-    if cont, do: button_reaction pid
+    if cont, do: button_reaction pid, count
   end
 
 end

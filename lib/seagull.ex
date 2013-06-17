@@ -1,4 +1,4 @@
-defmodule Sigui do
+defmodule Seagull do
 
   @moduledoc"""
     Provides basic functions for working with GUI.
