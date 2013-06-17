@@ -39,6 +39,7 @@ defmodule WindowProcess do
   # Returns response to message func for object id with params in to pid.
   defp respond(:button, object, func, params), do: WindowProcess.Button.respond object, func, params
   defp respond(:frame, object, func, params), do: WindowProcess.Frame.respond object, func, params
+  defp respond(:box, object, func, params), do: WindowProcess.Box.respond object, func, params
   defp respond(type, _object, _func, _params), do: raise {:uknown_type, type}
 
 end
