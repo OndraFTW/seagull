@@ -30,8 +30,13 @@ defmodule Widget do
   end
   
   defrecord Box, id: nil, orientation: nil, options: [], children: []
-  defmacro box(orientation, options//[]) do
-    children=case Keyword.get(options, :do) do
+  defmacro box(orientation, options//[], children//[]) do
+    if children==[] do
+      children=Keyword.get options, :do, []
+    else
+      children=Keyword.get children, :do, []
+    end
+    children=case children do
       {:__block__, _, children}->children
       nil->[]
       child->[child]

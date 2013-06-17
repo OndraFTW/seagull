@@ -1,5 +1,7 @@
 defmodule Compiler do
 
+  @moduledoc"Provides functions to compile records into wxObjects"
+
   require Constants
 
   def compile(Widget.Frame[id: id, title: title, options: options, children: children], pid//self) do

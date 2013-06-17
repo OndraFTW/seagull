@@ -30,17 +30,15 @@ defmodule WindowProcess do
     end
   end
 
-  # Send response to message func for object id with params to pid.
+  # Send response to message func for object id with params in to pid.
   defp send(window, pid, id, func, params) do
     [type: type, wxobject: object]=Keyword.get window, id
     pid<-{self(), id, func, respond(type, object, func, params)}
   end
 
-  
+  # Returns response to message func for object id with params in to pid.
   defp respond(:button, object, func, params), do: WindowProcess.Button.respond object, func, params
   defp respond(:frame, object, func, params), do: WindowProcess.Frame.respond object, func, params
   defp respond(type, _object, _func, _params), do: raise {:uknown_type, type}
-
-  def selfdestruct(), do: self() <- :destroy
 
 end
