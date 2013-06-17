@@ -1,3 +1,3 @@
-# Sigul
+# Seagull
 
 ** TODO: Add description **
