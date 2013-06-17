@@ -45,7 +45,7 @@ defmodule Compiler.Frame do
 
   defp react(_frame, _id, [], _pid), do: nil
   defp react(frame, id, [event|tail], pid) do
-    if Event.Frame.react(frame, id, event, pid) do
+    if Event.Frame.react(frame, id, event, pid) or Event.Mouse.react(frame, id, event, pid) do
       react frame, id, tail, pid
     end
   end
