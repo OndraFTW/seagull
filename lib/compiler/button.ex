@@ -1,6 +1,6 @@
 defmodule Compiler.Button do
   
-  require Constants
+  require Constant
 
   def compile(id, options, parent, pid) do
     {pre, post}=divide_options options
@@ -19,16 +19,16 @@ defmodule Compiler.Button do
   defp divide_options([{:react, events}|tail], pre, post), do: divide_options tail, pre, [{:react, events}|post]
   defp divide_options([{:align, style}|tail], pre, post) do
     s=case style do
-      :top->Constants.wxBU_TOP
-      :bottom->Constants.wxBU_BOTTOM
-      :right->Constants.wxBU_RIGHT
-      :left->Constants.wxBU_LEFT
+      :top->Constant.wxBU_TOP
+      :bottom->Constant.wxBU_BOTTOM
+      :right->Constant.wxBU_RIGHT
+      :left->Constant.wxBU_LEFT
     end
     divide_options tail, [{:style, s}|pre], post
   end
   defp divide_options([{:style, style}|tail], pre, post) do
     s=case style do
-      :exact_fit->Constants.wxBU_EXACTFIT
+      :exact_fit->Constant.wxBU_EXACTFIT
     end
     divide_options tail, [{:style, s}|pre], post
   end

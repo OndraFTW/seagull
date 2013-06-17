@@ -1,7 +1,7 @@
 defmodule Demo do
   import Widget
   
-  def start() do
+  def button() do
     f=frame :f, 'This is frame', size: {700, 700}, position: {50, 50}, react: [:closed] do
       box :vertical do
         box :horizontal do
@@ -23,16 +23,16 @@ defmodule Demo do
 
     pid=WindowProcess.start f
     
-    reaction pid
+    button_reaction pid
 
   end
 
-  def reaction(pid) do
+  def button_reaction(pid) do
     cont=receive do
       {^pid, :f, :closed}->IO.puts 'You closed frame.';pid<-:destroy;false
       {^pid, :H, :clicked}->IO.puts 'You clicked on button.';true
     end
-    if cont, do: reaction pid
+    if cont, do: button_reaction pid
   end
 
 end

@@ -1,11 +1,11 @@
 defmodule WindowProcess.Box do
-  require Constants
+  require Constant
 
   def respond(object, :get_orientation, []) do
     o = :wxBoxSizer.getOrientation object
     case o do
-      Constants.wxVERTICAL->:vertical
-      Constants.wxHORIZONTAL->:horizontal
+      Constant.wxVERTICAL->:vertical
+      Constant.wxHORIZONTAL->:horizontal
     end
   end
   def respond(object, func, options),

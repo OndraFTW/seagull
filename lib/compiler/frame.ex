@@ -1,5 +1,5 @@
 defmodule Compiler.Frame do
-  import Constants
+  import Constant
 
   def compile(id, title, options, children, parent, pid) do
     {pre, post}=divide_options options

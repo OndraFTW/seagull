@@ -2,7 +2,7 @@ defmodule Compiler do
 
   @moduledoc"Provides functions to compile records into wxObjects"
 
-  require Constants
+  require Constant
 
   def compile(Widget.Frame[id: id, title: title, options: options, children: children], pid//self) do
     Compiler.Frame.compile id, title, options, children, :wx.null, pid

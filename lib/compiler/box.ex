@@ -1,10 +1,10 @@
 defmodule Compiler.Box do
-  require Constants
+  require Constant
 
   def compile(id, orientation, options, children, parent, pid) do
     o=case orientation do
-      :vertical->Constants.wxVERTICAL
-      :horizontal->Constants.wxHORIZONTAL
+      :vertical->Constant.wxVERTICAL
+      :horizontal->Constant.wxHORIZONTAL
     end
     wxitem = :wxBoxSizer.new o
     compile_options(wxitem, id, options, pid)

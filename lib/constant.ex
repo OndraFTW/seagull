@@ -1,4 +1,4 @@
-defmodule Constants do
+defmodule Constant do
   @moduledoc"Constants used by wxErlang"
   defmacro wxVERTICAL, do: 8
   defmacro wxHORIZONTAL, do: 4
