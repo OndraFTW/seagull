@@ -45,10 +45,10 @@ defmodule Compiler.Button do
   defp compile_option(button, _id, :default, _pid), do: :wxButton.setDefault button
 
   defp button_react(_button, _id, [], _pid), do: true
-  defp button_react(button, id, [:clicked|tail], pid) do
-    my_pid=self
-    :wxEvtHandler.connect button, :command_button_clicked, [{:callback, fn(_, _)-> pid<-{my_pid, id, :clicked} end}]
-    button_react button, id, tail, pid
+  defp button_react(button, id, [event|tail], pid) do
+    if Event.Button.react(button, id, event, pid) or Event.Mouse.react(button, id, event, pid) do
+      button_react button, id, tail, pid
+    end
   end
 
 end

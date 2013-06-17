@@ -44,10 +44,10 @@ defmodule Compiler.Frame do
   end
 
   defp react(_frame, _id, [], _pid), do: nil
-  defp react(frame, id, [:closed|tail], pid) do
-    my_pid=self
-    :wxEvtHandler.connect frame, :close_window, [{:callback, fn(_, _)-> pid<-{my_pid, id, :closed} end}]
-    react frame, id, tail, pid
+  defp react(frame, id, [event|tail], pid) do
+    if Event.Frame.react(frame, id, event, pid) do
+      react frame, id, tail, pid
+    end
   end
 
 end
