@@ -2,6 +2,7 @@ defmodule Compiler.Frame do
   import Constant
 
   def compile(id, title, options, children, parent, pid) do
+    if is_binary(title), do: title=binary_to_list title
     {pre, post}=divide_options options
     wxitem = :wxFrame.new parent, -1, title, pre
     compile_options(wxitem, id, post, pid)
