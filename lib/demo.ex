@@ -28,6 +28,7 @@ defmodule Demo do
         end
         box :horizontal do
           button :K, label: 'This button counts\nclicks: 0', react: [:click]
+          button :L, label: 'This button grows\nwhen you click it.', react: [:click]
         end
       end
     end
@@ -60,6 +61,11 @@ defmodule Demo do
         count=count+1
         label=Regex.replace(%r/([0-9]+)/, label, integer_to_binary(count)) |> binary_to_list
         Seagull.set pid, :K, :label, label
+        true
+      {^pid, :L, :click}->
+        {w, h}=Seagull.get pid, :L, :size
+        Seagull.set pid, :L, :size, {w+1, h+1}
+        true
     end
     if cont, do: button_reaction pid
   end
