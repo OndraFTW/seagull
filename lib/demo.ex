@@ -1,7 +1,12 @@
 defmodule Demo do
+
+  @moduledoc"Contains demos."
+
   import Widget
   
+  @doc"Shows frame with different buttons."
   def button() do
+    #define frame f
     f=frame :f, 'This is frame', size: {700, 700}, position: {50, 50}, react: [:close, :mouse_left_down] do
       box :vertical do
         box :horizontal do
@@ -20,18 +25,23 @@ defmodule Demo do
           button :I, label: 'This button reacts\non mouse down and up clicks.', react: [:mouse_left_down, :mouse_right_down,
             :mouse_middle_down, :mouse_left_up, :mouse_right_up, :mouse_middle_up]
           button :J, label: 'This button reacts\non mouse entering\nand leaving it.', react: [:mouse_enter, :mouse_leave]
+        end
+        box :horizontal do
           button :K, label: 'This button counts\nclicks: 0', react: [:click]
         end
       end
     end
 
+    #start new GUI process with frame f
     pid=WindowProcess.start f
     
-    button_reaction pid, 0
+    #react on messages from GUI process
+    button_reaction pid
 
   end
 
-  defp button_reaction(pid, count) do
+  #reactions on messages from GUI process
+  defp button_reaction(pid) do
     cont=receive do
       {^pid, :f, :close}->IO.puts "You closed frame.";pid<-:destroy;false
       {^pid, :f, :mouse_left_down, {x, y}}->IO.puts "You clicked on frame on position [#{x}, #{y}].";true
@@ -45,12 +55,13 @@ defmodule Demo do
       {^pid, :J, :mouse_enter, {x, y}}->IO.puts "Your mouse entered button on position [#{x}, #{y}]";true
       {^pid, :J, :mouse_leave, {x, y}}->IO.puts "Your mouse left button on position [#{x}, #{y}]";true
       {^pid, :K, :click}->
-        count=count+1
         label=Seagull.get(pid, :K, :label) |> list_to_binary
+        count=Regex.run(%r/[0-9]+/, label) |> Enum.first |> binary_to_integer
+        count=count+1
         label=Regex.replace(%r/([0-9]+)/, label, integer_to_binary(count)) |> binary_to_list
         Seagull.set pid, :K, :label, label
     end
-    if cont, do: button_reaction pid, count
+    if cont, do: button_reaction pid
   end
 
 end
