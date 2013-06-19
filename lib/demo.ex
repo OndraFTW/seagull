@@ -4,6 +4,10 @@ defmodule Demo do
 
   import Widget
   
+  #
+  # BUTTON DEMO
+  #
+
   @doc"Shows frame with different buttons."
   def button() do
     #define frame f
@@ -68,6 +72,33 @@ defmodule Demo do
         true
     end
     if cont, do: button_reaction pid
+  end
+
+  #
+  # BOX DEMO
+  #
+
+  def box()do
+    f=frame :f, "This is frame", react: [:close] do
+      box :horizontal, id: :box do
+        button :A, label: "Append", react: [:click]
+        button :B, label: "Prepend", react: [:click]
+      end
+    end
+
+    pid=WindowProcess.start f
+
+    box_reaction pid
+
+  end
+
+  def box_reaction(pid)do
+    cont=receive do
+      {^pid, :f, :close}->pid<-:destroy;false
+      {^pid, :A, :click}->
+        Seagull.send pid, :box, :append, button(:_, label: "B")
+    end
+    if cont, do: box_reaction pid
   end
 
 end

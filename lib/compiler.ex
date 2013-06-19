@@ -5,32 +5,34 @@ defmodule Compiler do
   require Constant
 
   def compile(Widget.Frame[id: id, title: title, options: options, children: children], pid//self) do
-    Compiler.Frame.compile id, title, options, children, :wx.null, pid
+    Compiler.Frame.compile id, title, options, children, wxparent: :wx.null, pid: pid, parent: nil
   end
 
-  defp compile_child(Widget.Frame[id: id, title: title, options: options, children: children], parent, pid) do
-    Compiler.Frame.compile id, title, options, children, parent, pid
+  defp compile_child(Widget.Frame[id: id, title: title, options: options, children: children], data) do
+    Compiler.Frame.compile id, title, options, children, data
   end
 
-  defp compile_child(Widget.Button[id: id, options: options], parent, pid) do
-    Compiler.Button.compile id, options, parent, pid
+  defp compile_child(Widget.Button[id: id, options: options], data) do
+    Compiler.Button.compile id, options, data
   end
 
-  defp compile_child(Widget.Box[id: id, orientation: orientation, options: options, children: children], parent, pid) do
-    Compiler.Box.compile id, orientation, options, children, parent, pid
+  defp compile_child(Widget.Box[id: id, orientation: orientation, options: options, children: children], data) do
+    Compiler.Box.compile id, orientation, options, children, data
   end
 
-  def compile_children([], _parent, result, _pid), do: result
-  def compile_children([child|tail], parent, result, pid),
-    do: compile_children tail, parent, compile_child(child, parent, pid)++result, pid
-  def compile_children(child, parent, result, pid), do: compile_child(child, parent, pid)++result
+  def compile_children([], _data, result), do: result
+  def compile_children([child|tail], data, result),
+    do: compile_children tail, data, compile_child(child, data)++result
+  def compile_children(child, data, result),
+    do: compile_child(child, data)++result
 
-  def compile_box_children([], _box, _parent, result, _pid), do: result
-  def compile_box_children([child|tail], box, parent, result, pid) do
-    [chead|ctail]=compile_child child, parent, pid
-    {_cid, data}=chead
-    :wxSizer.add box, Keyword.get(data, :wxobject)
-    [chead|ctail]++compile_box_children(tail, box, parent, result, pid)
+  def compile_box_children([], _data, result), do: result
+  def compile_box_children([child|tail], data, result) do
+    box=Keyword.get data, :wxbox
+    [chead|ctail]=compile_child child, data
+    {_cid, cdata}=chead
+    :wxSizer.add box, Keyword.get(cdata, :wxobject)
+    [chead|ctail]++compile_box_children(tail, data, result)
   end
 
 end

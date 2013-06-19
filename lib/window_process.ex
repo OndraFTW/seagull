@@ -32,8 +32,8 @@ defmodule WindowProcess do
 
   # Send response to message func for object id with params in to pid.
   defp send(window, pid, id, func, params) do
-    [type: type, wxobject: object]=Keyword.get window, id
-    pid<-{self(), id, func, respond(type, object, func, params)}
+    object=Keyword.get window, id
+    pid<-{self(), id, func, respond(Keyword.get(object, :type), object, func, params)}
   end
 
   # Returns response to message func for object id with params in to pid.

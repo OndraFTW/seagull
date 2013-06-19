@@ -1,13 +1,15 @@
 defmodule Compiler.Frame do
   import Constant
 
-  def compile(id, title, options, children, parent, pid) do
+  def compile(id, title, options, children, data) do
     if is_binary(title), do: title=binary_to_list title
     {pre, post}=divide_options options
+    pid=Keyword.get data, :pid
+    parent=Keyword.get data, :wxparent
     wxitem = :wxFrame.new parent, -1, title, pre
     compile_options(wxitem, id, post, pid)
-    children=Compiler.compile_children children, wxitem, [], pid
-    [{id, [type: :frame, wxobject: wxitem]}|children]
+    children=Compiler.compile_children children, [wxparent: wxitem, parent: id, pid: pid], []
+    [{id, [type: :frame, wxobject: wxitem]++data}|children]
   end
 
   defp divide_options(options), do: divide_options options, [], []

@@ -2,11 +2,13 @@ defmodule Compiler.Button do
   
   require Constant
 
-  def compile(id, options, parent, pid) do
+  def compile(id, options, data) do
     {pre, post}=divide_options options
+    parent=Keyword.get data, :wxparent
+    pid=Keyword.get data, :pid
     wxitem = :wxButton.new parent, -1, pre
     compile_options(wxitem, id, post, pid)
-    [{id, [type: :button, wxobject: wxitem]}]
+    [{id, [type: :button, wxobject: wxitem]++data}]
   end
 
   defp divide_options(options), do: divide_options options, [], []

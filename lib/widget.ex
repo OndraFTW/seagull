@@ -43,7 +43,12 @@ defmodule Widget do
     end
     options=Keyword.delete options, :do
     children=eval_children(children)
-    idi=Keyword.get options, :id, :_
+    if Keyword.has_key?(options, :id) do
+      idi=Keyword.get options, :id
+      options=Keyword.delete options, :id
+    else
+      idi=:_
+    end
     quote do: Widget.Box.new id: unquote(idi), orientation: unquote(orientation), options: unquote(options), children: unquote(children)
   end
 
