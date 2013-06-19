@@ -8,15 +8,15 @@ defmodule Compiler do
     Compiler.Frame.compile id, title, options, children, wxparent: :wx.null, pid: pid, parent: nil
   end
 
-  defp compile_child(Widget.Frame[id: id, title: title, options: options, children: children], data) do
+  def compile_child(Widget.Frame[id: id, title: title, options: options, children: children], data) do
     Compiler.Frame.compile id, title, options, children, data
   end
 
-  defp compile_child(Widget.Button[id: id, options: options], data) do
+  def compile_child(Widget.Button[id: id, options: options], data) do
     Compiler.Button.compile id, options, data
   end
 
-  defp compile_child(Widget.Box[id: id, orientation: orientation, options: options, children: children], data) do
+  def compile_child(Widget.Box[id: id, orientation: orientation, options: options, children: children], data) do
     Compiler.Box.compile id, orientation, options, children, data
   end
 

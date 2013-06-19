@@ -81,8 +81,8 @@ defmodule Demo do
   def box()do
     f=frame :f, "This is frame", react: [:close] do
       box :horizontal, id: :box do
-        button :A, label: "Append", react: [:click]
-        button :B, label: "Prepend", react: [:click]
+        button :A, label: "APPEND", react: [:click]
+        button :B, label: "PREPEND", react: [:click]
       end
     end
 
@@ -96,7 +96,9 @@ defmodule Demo do
     cont=receive do
       {^pid, :f, :close}->pid<-:destroy;false
       {^pid, :A, :click}->
-        Seagull.send pid, :box, :append, button(:_, label: "B")
+        Seagull.send pid, :box, :append, button(:_, label: "Appended")
+      {^pid, :B, :click}->
+        Seagull.send pid, :box, :prepend, button(:_, label: "Prepended")
     end
     if cont, do: box_reaction pid
   end

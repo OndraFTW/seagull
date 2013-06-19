@@ -9,7 +9,7 @@ defmodule Compiler.Frame do
     wxitem = :wxFrame.new parent, -1, title, pre
     compile_options(wxitem, id, post, pid)
     children=Compiler.compile_children children, [wxparent: wxitem, parent: id, pid: pid], []
-    [{id, [type: :frame, wxobject: wxitem]++data}|children]
+    [{id, [type: :frame, wxobject: wxitem, id: id]++data}|children]
   end
 
   defp divide_options(options), do: divide_options options, [], []
