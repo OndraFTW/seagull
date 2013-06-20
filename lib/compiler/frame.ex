@@ -3,6 +3,7 @@ defmodule Compiler.Frame do
 
   def compile(id, title, options, children, data) do
     if is_binary(title), do: title=binary_to_list title
+    if id==:_, do: id=Compiler.random_id
     {pre, post}=divide_options options
     pid=Keyword.get data, :pid
     parent=Keyword.get data, :wxparent

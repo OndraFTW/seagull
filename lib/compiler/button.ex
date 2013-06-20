@@ -3,6 +3,7 @@ defmodule Compiler.Button do
   require Constant
 
   def compile(id, options, data) do
+    if id==:_, do: id=Compiler.random_id
     {pre, post}=divide_options options
     parent=Keyword.get data, :wxparent
     pid=Keyword.get data, :pid

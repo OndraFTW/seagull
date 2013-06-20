@@ -20,6 +20,10 @@ defmodule Compiler do
     Compiler.Box.compile id, orientation, options, children, data
   end
 
+  def random_id() do
+    :random.uniform(4294967295) |> integer_to_binary |> binary_to_atom
+  end
+
   def compile_children([], _data, result), do: result
   def compile_children([child|tail], data, result),
     do: compile_children tail, data, compile_child(child, data)++result

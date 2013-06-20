@@ -6,6 +6,7 @@ defmodule Compiler.Box do
       :vertical->Constant.wxVERTICAL
       :horizontal->Constant.wxHORIZONTAL
     end
+    if id==:_, do: id=Compiler.random_id
     wxitem = :wxBoxSizer.new o
     pid=Keyword.get data, :pid
     parent=Keyword.get data, :wxparent
