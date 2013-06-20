@@ -6,7 +6,7 @@ defmodule Compiler.Frame do
     {pre, post}=divide_options options
     pid=Keyword.get data, :pid
     parent=Keyword.get data, :wxparent
-    wxitem = :wxFrame.new parent, -1, title, pre
+    wxitem = :wxFrame.new parent, Constant.wxID_ANY, title, pre
     compile_options(wxitem, id, post, pid)
     children=Compiler.compile_children children, [wxparent: wxitem, parent: id, pid: pid], []
     [{id, [type: :frame, wxobject: wxitem, id: id]++data}|children]

@@ -1,5 +1,6 @@
 defmodule Constant do
   @moduledoc"Constants used by wxErlang"
+  defmacro wxID_ANY, do: -1
   defmacro wxVERTICAL, do: 8
   defmacro wxHORIZONTAL, do: 4
   defmacro wxBU_RIGHT, do: 256

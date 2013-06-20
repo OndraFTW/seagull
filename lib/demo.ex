@@ -79,10 +79,14 @@ defmodule Demo do
   #
 
   def box()do
-    f=frame :f, "This is frame", react: [:close] do
-      box :horizontal, id: :box do
-        button :A, label: "APPEND", react: [:click]
-        button :B, label: "PREPEND", react: [:click]
+    f=frame :f, "This is frame", react: [:close], size: {700, 500} do
+      box :vertical, id: :vbox do
+        box :horizontal, id: :hbox do
+          button :A, label: "Prepend button", react: [:click]
+          button :B, label: "Append button", react: [:click]
+          button :C, label: "Prepend line", react: [:click]
+          button :D, label: "Append line", react: [:click]
+        end
       end
     end
 
@@ -96,9 +100,14 @@ defmodule Demo do
     cont=receive do
       {^pid, :f, :close}->pid<-:destroy;false
       {^pid, :A, :click}->
-        Seagull.send pid, :box, :append, button(:_, label: "Appended")
+        Seagull.send pid, :hbox, :prepend, button(:_, label: "P")
       {^pid, :B, :click}->
-        Seagull.send pid, :box, :prepend, button(:_, label: "Prepended")
+        Seagull.send pid, :hbox, :append, button(:_, label: "A")
+      {^pid, :C, :click}->
+        Seagull.send pid, :vbox, :prepend, box(:horizontal, do: button(:_, label: "PL"))
+      {^pid, :D, :click}->
+        Seagull.send pid, :vbox, :append, box(:horizontal, do: button(:_, label: "AL"))
+
     end
     if cont, do: box_reaction pid
   end
