@@ -14,15 +14,16 @@ defmodule Demo do
     f=frame :f, "This is frame", size: {700, 700}, position: {50, 50}, react: [:close, :mouse_left_down] do
       box :vertical do
         box :horizontal do
-          button :A, label: "This button is\ntop aligned.", size: {130, 130}, align: :top
-          button :B, label: "This button is\nbottom aligned.", size: {130, 130}, align: :bottom
-          button :C, label: "This button is\nright aligned.", size: {130, 130}, align: :right
-          button :D, label: "This button is\nleft aligned.", size: {130, 130}, align: :left
+          button :A, label: "This button's label is\ntop aligned.", size: {170, 150}, label_align: :top
+          button :B, label: "This button's label is\nbottom aligned.", size: {170, 150}, label_align: :bottom
+          button :C, label: "This button's label is\nright aligned.", size: {170, 150}, label_align: :right
+          button :D, label: "This button's label is\nleft aligned.", size: {170, 150}, label_align: :left
         end
         box :horizontal do
           button :E, label: "This button is\ndisabled.", disabled: true
           button :F, label: "This button is\ndefault.", default: true
-          button :G, label: "This button\nfits exactly.", style: :exact_fit
+          button :G, label: "This button\nfits exactly.", exact_fit: true
+          button :M, label: "This button\nhas no border", no_border: true
         end
         box :horizontal do
           button :H, label: "This button\nreacts on clicks.", react: [:click]

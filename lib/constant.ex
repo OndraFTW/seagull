@@ -8,6 +8,7 @@ defmodule Constant do
   defmacro wxBU_BOTTOM, do: 512
   defmacro wxBU_TOP, do: 128
   defmacro wxBU_EXACTFIT, do: 1
+  defmacro wxNO_BORDER, do: 2097152
   defmacro wxBORDER_DEFAULT, do: 0
   defmacro wxBORDER_NONE, do: 2097152
   defmacro wxBORDER_STATIC, do: 16777216

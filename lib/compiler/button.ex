@@ -21,7 +21,9 @@ defmodule Compiler.Button do
   defp divide_options([{:position, {w, h}}|tail], pre, post), do: divide_options tail, [{:pos, {w, h}}|pre], post
   defp divide_options([{:size, {w, h}}|tail], pre, post), do: divide_options tail, [{:size, {w, h}}|pre], post
   defp divide_options([{:react, events}|tail], pre, post), do: divide_options tail, pre, [{:react, events}|post]
-  defp divide_options([{:align, style}|tail], pre, post) do
+  defp divide_options([{:exact_fit, true}|tail], pre, post), do: divide_options tail, [{:style, Constant.wxBU_EXACTFIT}|pre], post
+  defp divide_options([{:no_border, true}|tail], pre, post), do: divide_options tail, [{:style, Constant.wxNO_BORDER}|pre], post
+  defp divide_options([{:label_align, style}|tail], pre, post) do
     s=case style do
       :top->Constant.wxBU_TOP
       :bottom->Constant.wxBU_BOTTOM
@@ -30,13 +32,7 @@ defmodule Compiler.Button do
     end
     divide_options tail, [{:style, s}|pre], post
   end
-  defp divide_options([{:style, style}|tail], pre, post) do
-    s=case style do
-      :exact_fit->Constant.wxBU_EXACTFIT
-    end
-    divide_options tail, [{:style, s}|pre], post
-  end
-
+  
   defp compile_options(_button, _id, [], _pid), do: true
   defp compile_options(button, id, [head|tail], pid) do
     compile_option button, id, head, pid
