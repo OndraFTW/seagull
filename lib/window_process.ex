@@ -22,7 +22,7 @@ defmodule WindowProcess do
       :destroy->
         nil
       {pid, id, function, params}->
-        send window, pid, id, function, params
+        window=send window, pid, id, function, params
         rec window, pid
       a-> 
         IO.inspect a
@@ -32,8 +32,14 @@ defmodule WindowProcess do
 
   # Send response to message func for object id with params in to pid.
   defp send(window, pid, id, func, params) do
-    object=Keyword.get window, id
-    pid<-{self(), id, func, respond(Keyword.get(object, :type), object, func, params)}
+    object=[{:window, window}|Keyword.get(window, id)]
+    response=respond(Keyword.get(object, :type), object, func, params)
+    response=case response do
+      {:response_window, response, window}->response
+      response->response
+    end
+    pid<-{self(), id, func, response}
+    window
   end
 
   # Returns response to message func for object id with params in to pid.
