@@ -81,7 +81,4 @@ defmodule Seagull do
     add_pid_and_widget tail, data, [{[[Keyword.get(data, :pid), Keyword.get(data, :widget)|pre]], post}|result]
   end
 
-
-#Seagull.define_line({:from,[line: 133],[[pid: {:^,[line: 133],[{:pid1,[line: 133],nil}]}],[do: {:"->",[line: 134],[{[{:from,[line: 134],[[widget: :A, do: :click]]}],{:__block__,[line: 130],[{{:.,[line: 134],[{:__aliases__,[line: 134],[:IO]},:puts]},[line: 134],["Button was clicked"]},{:from,[line: 135],[[widget: :f],[do: {:"->",[line: 136],[{[:close],{:__block__,[line: 130],[{{:.,[line: 137],[{:__aliases__,[line: 137],[:IO]},:puts]},[line: 137],["closing"]},{:<-,[line: 138],[{:pid1,[line: 138],nil},:destroy]},{:<-,[line: 139],[{:pid2,[line: 139],nil},:destroy]},{:=,[line: 140],[{:continue,[line: 140],nil},false]}]}}]}]]}]}}]}]]}, [])
-
 end
