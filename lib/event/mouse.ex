@@ -58,6 +58,41 @@ defmodule Event.Mouse do
       end}]
     true
   end
+  def react(object, id, :mouse_move, pid) do
+    my_pid=self
+    :wxEvtHandler.connect object, :motion, [{:callback, fn(_, e)->
+        pid<-[my_pid, id, :mouse_move, :wxMouseEvent.getPosition(e)]
+      end}]
+    true
+  end
+  def react(object, id, :mouse_wheel, pid) do
+    my_pid=self
+    :wxEvtHandler.connect object, :mousewheel, [{:callback, fn(_, e)->
+        pid<-[my_pid, id, :mouse_wheel, if :wxMouseEvent.getWheelRotation(e)>0, do: :up, else: :down]
+      end}]
+    true
+  end
+  def react(object, id, :mouse_left_double_click, pid) do
+    my_pid=self
+    :wxEvtHandler.connect object, :left_dclick, [{:callback, fn(_, e)->
+        pid<-[my_pid, id, :mouse_left_double_click, :wxMouseEvent.getPosition(e)]
+      end}]
+    true
+  end
+  def react(object, id, :mouse_right_double_click, pid) do
+    my_pid=self
+    :wxEvtHandler.connect object, :right_dclick, [{:callback, fn(_, e)->
+        pid<-[my_pid, id, :mouse_right_double_click, :wxMouseEvent.getPosition(e)]
+      end}]
+    true
+  end
+  def react(object, id, :mouse_middle_double_click, pid) do
+    my_pid=self
+    :wxEvtHandler.connect object, :middle_dclick, [{:callback, fn(_, e)->
+        pid<-[my_pid, id, :mouse_middle_double_click, :wxMouseEvent.getPosition(e)]
+      end}]
+    true
+  end
   def react(_button, _id, _event, _pid), do: false
 
 end

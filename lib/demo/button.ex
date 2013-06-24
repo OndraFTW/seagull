@@ -12,7 +12,7 @@ defmodule Demo.Button do
   @doc"Shows frame with different buttons."
   def start() do
     #define frame f
-    f=frame :f, "This is frame", size: {700, 700}, position: {50, 50}, react: [:close, :mouse_left_down] do
+    f=frame :f, "This is frame", size: {800, 700}, position: {50, 50}, react: [:close, :mouse_left_down] do
       box :vertical do
         box :horizontal do
           button :A, label: "This button's label is\ntop aligned.", size: {170, 150}, label_align: :top
@@ -31,6 +31,12 @@ defmodule Demo.Button do
           button :I, label: "This button reacts\non mouse down and up clicks.", react: [:mouse_left_down, :mouse_right_down,
             :mouse_middle_down, :mouse_left_up, :mouse_right_up, :mouse_middle_up]
           button :J, label: "This button reacts\non mouse entering\nand leaving it.", react: [:mouse_enter, :mouse_leave]
+          button :N, label: "This button reacts\non mouse moving\nover it", react: [:mouse_move]
+        end
+        box :horizontal do
+          button :O, label: "This button reacts\non mouse wheel.", react:  [:mouse_wheel]
+          button :P, label: "This button reacts\non mouse double clicks", react: [:mouse_left_double_click,
+            :mouse_right_double_click, :mouse_middle_double_click]
         end
         box :horizontal do
           button :K, label: "This button counts\nclicks: 0", react: [:click]
@@ -85,6 +91,13 @@ defmodule Demo.Button do
           :click->
             {w, h}=get pid, :L, :size
             set pid, :L, :size, {w+1, h+1}
+        end
+        from widget: :N, do: (:mouse_move, {x, y}->IO.puts "Mouse moved to [#{x}, #{y}].")
+        from widget: :O, do: (:mouse_wheel, direction->IO.puts "Mouse wheel goes #{if direction==:up, do: "up", else: "down"}.")
+        from widget: :P do
+          :mouse_left_double_click, {x, y}->IO.puts "You left double clicked on position [#{x}, #{y}]."
+          :mouse_right_double_click, {x, y}->IO.puts "You right double clicked on position [#{x}, #{y}]."
+          :mouse_middle_double_click, {x, y}->IO.puts "You middle double clicked on position [#{x}, #{y}]."
         end
       end
     end
