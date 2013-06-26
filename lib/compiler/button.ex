@@ -7,9 +7,10 @@ defmodule Compiler.Button do
     {pre, post}=divide_options options
     parent=Keyword.get data, :wxparent
     pid=Keyword.get data, :pid
+    my_pid=Keyword.get options, :pid, pid
     wxitem = :wxButton.new parent, Constant.wxID_ANY, pre
-    compile_options(wxitem, id, post, pid)
-    [{id, [type: :button, wxobject: wxitem, id: id, pid: pid]++data}]
+    compile_options(wxitem, id, post, my_pid)
+    [{id, [type: :button, wxobject: wxitem, id: id, pid: my_pid]++data}]
   end
 
   defp divide_options(options), do: divide_options options, [], []
@@ -23,6 +24,8 @@ defmodule Compiler.Button do
   defp divide_options([{:react, events}|tail], pre, post), do: divide_options tail, pre, [{:react, events}|post]
   defp divide_options([{:exact_fit, true}|tail], pre, post), do: divide_options tail, [{:style, Constant.wxBU_EXACTFIT}|pre], post
   defp divide_options([{:no_border, true}|tail], pre, post), do: divide_options tail, [{:style, Constant.wxNO_BORDER}|pre], post
+  defp divide_options([{:pid, _}|tail], pre, post), do: divide_options tail, pre, post
+  defp divide_options([{:children_pid, _}|tail], pre, post), do: divide_options tail, pre, post
   defp divide_options([{:label_align, style}|tail], pre, post) do
     s=case style do
       :top->Constant.wxBU_TOP

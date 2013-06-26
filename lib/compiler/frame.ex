@@ -6,11 +6,13 @@ defmodule Compiler.Frame do
     if id==:_, do: id=Compiler.random_id
     {pre, post}=divide_options options
     pid=Keyword.get data, :pid
+    children_pid=Keyword.get options, :children_pid, pid
+    my_pid=Keyword.get options, :pid, pid
     parent=Keyword.get data, :wxparent
     wxitem = :wxFrame.new parent, Constant.wxID_ANY, title, pre
-    compile_options(wxitem, id, post, pid)
-    children=Compiler.compile_children children, [wxparent: wxitem, parent: id, pid: pid], []
-    [{id, [type: :frame, wxobject: wxitem, id: id, pid: pid]++data}|children]
+    compile_options(wxitem, id, post, my_pid)
+    children=Compiler.compile_children children, [wxparent: wxitem, parent: id, pid: children_pid], []
+    [{id, [type: :frame, wxobject: wxitem, id: id, pid: my_pid]++data}|children]
   end
 
   defp divide_options(options), do: divide_options options, [], []
@@ -18,6 +20,8 @@ defmodule Compiler.Frame do
   defp divide_options([{:position, {x, y}}|tail], pre, post), do: divide_options tail, [{:pos, {x, y}}|pre], post
   defp divide_options([{:size, {w, h}}|tail], pre, post), do: divide_options tail, [{:size, {w, h}}|pre], post
   defp divide_options([{:react, events}|tail], pre, post), do: divide_options tail, pre, [{:react, events}|post]
+  defp divide_options([{:pid, _}|tail], pre, post), do: divide_options tail, pre, post
+  defp divide_options([{:children_pid, _}|tail], pre, post), do: divide_options tail, pre, post
   defp divide_options([{:border, border}|tail], pre, post) do
     o=case border do
       :default->wxBORDER_DEFAULT
