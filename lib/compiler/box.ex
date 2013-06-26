@@ -14,7 +14,7 @@ defmodule Compiler.Box do
     {:wx_ref, r, :wxSizer, []} = :wxWindow.getSizer parent
     if r==0, do: :wxWindow.setSizer parent, wxitem
     children=Compiler.compile_box_children children, [wxparent: parent, parent: id, wxbox: wxitem, pid: pid], []
-    [{id, [type: :box, wxobject: wxitem, id: id]++data}|children]
+    [{id, [type: :box, wxobject: wxitem, id: id, pid: pid]++data}|children]
   end
 
   

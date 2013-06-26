@@ -42,6 +42,10 @@ defmodule Demo.Button do
           button :K, label: "This button counts\nclicks: 0", react: [:click]
           button :L, label: "This button grows\nwhen you click it.", react: [:click]
         end
+        box :horizontal do
+          button :Q, label: "This button\ndoesn't do anything."
+          button :R, label: "This button activate\nbutton on the left.", react: [:click]
+        end
       end
     end
 
@@ -99,6 +103,12 @@ defmodule Demo.Button do
           :mouse_right_double_click, {x, y}->IO.puts "You right double clicked on position [#{x}, #{y}]."
           :mouse_middle_double_click, {x, y}->IO.puts "You middle double clicked on position [#{x}, #{y}]."
         end
+        from widget: :R do 
+          :click->
+            send pid, :Q, :react, :click
+            send pid, :Q, :set_label, "This button\nreacts on clicks."
+        end
+        from widget: :Q, do: (:click->IO.puts "You clicked on activated button.")
       end
     end
     if continue, do: reaction pid

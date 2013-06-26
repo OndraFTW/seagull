@@ -9,7 +9,7 @@ defmodule Compiler.Button do
     pid=Keyword.get data, :pid
     wxitem = :wxButton.new parent, Constant.wxID_ANY, pre
     compile_options(wxitem, id, post, pid)
-    [{id, [type: :button, wxobject: wxitem, id: id]++data}]
+    [{id, [type: :button, wxobject: wxitem, id: id, pid: pid]++data}]
   end
 
   defp divide_options(options), do: divide_options options, [], []
