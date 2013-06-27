@@ -19,7 +19,7 @@ defmodule Demo.Mouse do
       end
     end
 
-    pid=WindowProcess.start f
+    pid=WindowProcess.spawn f
     reaction pid
   end
 
