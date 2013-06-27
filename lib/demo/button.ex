@@ -12,7 +12,7 @@ defmodule Demo.Button do
   @doc"Shows frame with different buttons."
   def start() do
     #define frame f
-    f=frame :f, "This is frame", size: {800, 700}, position: {50, 50}, react: [:close, :mouse_left_down] do
+    f=frame :f, "This is frame", size: {800, 700}, position: {50, 50}, react: [:close] do
       box :vertical do
         box :horizontal do
           button :A, label: "This button's label is\ntop aligned.", size: {170, 150}, label_align: :top
@@ -28,17 +28,6 @@ defmodule Demo.Button do
         end
         box :horizontal do
           button :H, label: "This button\nreacts on clicks.", react: [:click]
-          button :I, label: "This button reacts\non mouse down and up clicks.", react: [:mouse_left_down, :mouse_right_down,
-            :mouse_middle_down, :mouse_left_up, :mouse_right_up, :mouse_middle_up]
-          button :J, label: "This button reacts\non mouse entering\nand leaving it.", react: [:mouse_enter, :mouse_leave]
-          button :N, label: "This button reacts\non mouse moving\nover it", react: [:mouse_move]
-        end
-        box :horizontal do
-          button :O, label: "This button reacts\non mouse wheel.", react:  [:mouse_wheel]
-          button :P, label: "This button reacts\non mouse double clicks", react: [:mouse_left_double_click,
-            :mouse_right_double_click, :mouse_middle_double_click]
-        end
-        box :horizontal do
           button :K, label: "This button counts\nclicks: 0", react: [:click]
           button :L, label: "This button grows\nwhen you click it.", react: [:click]
         end
@@ -67,22 +56,8 @@ defmodule Demo.Button do
             IO.puts "You closed frame."
             pid<-:destroy
             continue=false
-          :mouse_left_down, {x, y}->
-            IO.puts "You clicked on frame on position [#{x}, #{y}]."
         end
         from widget: :H, do: (:click->IO.puts "You clicked on button.")
-        from widget: :I do
-          :mouse_left_down, {x, y}->IO.puts "Your left mouse button is down on position [#{x}, #{y}]."
-          :mouse_right_down, {x, y}->IO.puts "Your right mouse button is down on position [#{x}, #{y}]."
-          :mouse_middle_down, {x, y}->IO.puts "Your middle mouse button is down on position [#{x}, #{y}]."
-          :mouse_left_up, {x, y}->IO.puts "Your left mouse button is up on position [#{x}, #{y}]."
-          :mouse_right_up, {x, y}->IO.puts "Your right mouse button is up on position [#{x}, #{y}]."
-          :mouse_middle_up, {x, y}->IO.puts "Your middle mouse button is up on position [#{x}, #{y}]."
-        end
-        from widget: :J do
-          :mouse_enter, {x, y}->IO.puts "Your mouse entered button on position [#{x}, #{y}]"
-          :mouse_leave, {x, y}->IO.puts "Your mouse left button on position [#{x}, #{y}]"
-        end
         from widget: :K do
           :click->
             label=get pid, :K, :label
@@ -95,13 +70,6 @@ defmodule Demo.Button do
           :click->
             {w, h}=get pid, :L, :size
             set pid, :L, :size, {w+1, h+1}
-        end
-        from widget: :N, do: (:mouse_move, {x, y}->IO.puts "Mouse moved to [#{x}, #{y}].")
-        from widget: :O, do: (:mouse_wheel, direction->IO.puts "Mouse wheel goes #{if direction==:up, do: "up", else: "down"}.")
-        from widget: :P do
-          :mouse_left_double_click, {x, y}->IO.puts "You left double clicked on position [#{x}, #{y}]."
-          :mouse_right_double_click, {x, y}->IO.puts "You right double clicked on position [#{x}, #{y}]."
-          :mouse_middle_double_click, {x, y}->IO.puts "You middle double clicked on position [#{x}, #{y}]."
         end
         from widget: :R do 
           :click->
