@@ -33,6 +33,10 @@ defmodule Seagull do
     end
   end
 
+  def pid_to_binary(pid) do
+    pid |> pid_to_list |> list_to_binary
+  end
+
   #macro reaction
 
   defmacro receive_event(block) do
