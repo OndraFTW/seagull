@@ -40,7 +40,7 @@ defmodule Seagull do
   #macro reaction
 
   defmacro receive_event(block) do
-    {:receive, [], [[do: {:"->", [], define_lines(block)}]]}
+    {:receive, [], [[do: {:"->", [], Enum.reverse(define_lines(block))}]]}
   end
 
   defp define_lines([do: {:__block__, _, block}]) do
@@ -80,7 +80,7 @@ defmodule Seagull do
   end
 
   defp add_pid_and_widget(list, data), do: add_pid_and_widget(list, data, [])
-  defp add_pid_and_widget([], _data, result), do: Enum.reverse result
+  defp add_pid_and_widget([], _data, result), do: result
   defp add_pid_and_widget([{pre, post}|tail], data, result) do
     add_pid_and_widget tail, data, [{[[Keyword.get(data, :pid), Keyword.get(data, :widget)|pre]], post}|result]
   end

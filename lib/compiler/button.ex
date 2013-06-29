@@ -51,6 +51,8 @@ defmodule Compiler.Button do
   defp button_react(button, id, [event|tail], pid) do
     if Event.Button.react(button, id, event, pid) or Event.Mouse.react(button, id, event, pid) do
       button_react button, id, tail, pid
+    else
+      raise {:uknown_event, event}
     end
   end
 
