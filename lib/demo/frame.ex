@@ -8,6 +8,8 @@ defmodule Demo.Frame do
         button :title_button, label: "Add 'a' to the title", react: [:click]
         button :maximize_button, label: "Maximize", react: [:click]
         button :minimize_button, label: "Minimize", react: [:click]
+        button :show_fullscreen_button, label: "Show fullscreen", react: [:click]
+        button :close_fullscreen_button, label: "Close fullscreen", react: [:click]
         button :status_button, label: "Status", react: [:click]
       end
     end
@@ -35,6 +37,8 @@ defmodule Demo.Frame do
         end
         from widget: :maximize_button, do: (:click->send pid, :frame, :maximize)
         from widget: :minimize_button, do: (:click->send pid, :frame, :minimize)
+        from widget: :show_fullscreen_button, do: (:click->send pid, :frame, :show_fullscreen)
+        from widget: :close_fullscreen_button, do: (:click->send pid, :frame, :close_fullscreen)
         from widget: :status_button do
           :click->
             maxi=send pid, :frame, :is_maximized
