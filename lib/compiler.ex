@@ -20,6 +20,10 @@ defmodule Compiler do
     Compiler.Box.compile id, orientation, options, children, data
   end
 
+  def compile_child(Widget.TextBox[id: id, options: options], data) do
+    Compiler.TextBox.compile id, options, data
+  end
+
   def random_id() do
     :random.uniform(4294967295) |> integer_to_binary |> binary_to_atom
   end

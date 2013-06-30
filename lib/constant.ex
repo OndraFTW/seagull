@@ -18,4 +18,8 @@ defmodule Constant do
   defmacro wxBORDER_DOUBLE, do: 268435456
   defmacro wxBORDER_THEME, do:  268435456 
   defmacro wxBORDER_MASK, do: 522190848
+  defmacro wxTE_LEFT, do: 0
+  defmacro wxTE_RIGHT, do: 512
+  defmacro wxTE_CENTER, do: 256
+  defmacro wxTE_CENTRE, do: 256
 end

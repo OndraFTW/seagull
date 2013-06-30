@@ -52,4 +52,9 @@ defmodule Widget do
     quote do: Widget.Box.new id: unquote(idi), orientation: unquote(orientation), options: unquote(options), children: unquote(children)
   end
 
+  defrecord TextBox, id: nil, options: []
+  defmacro text_box(id, options//[]) do
+    quote do: Widget.TextBox.new id: unquote(id), options: unquote(options)
+  end
+
 end
