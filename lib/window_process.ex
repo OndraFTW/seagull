@@ -32,7 +32,9 @@ defmodule WindowProcess do
 
   # Send response to message func for object id with params in to pid.
   defp send(window, pid, id, func, params) do
-    object=[{:window, window}|Keyword.get(window, id)]
+    object=Keyword.get(window, id, nil)
+    if object==nil, do: raise {:uknown_object, id}
+    object=[{:window, window}|object]
     response=respond(Keyword.get(object, :type), object, func, params)
     response=case response do
       {:response_window, response, window}->response
@@ -46,6 +48,7 @@ defmodule WindowProcess do
   defp respond(:button, object, func, params), do: WindowProcess.Button.respond object, func, params
   defp respond(:frame, object, func, params), do: WindowProcess.Frame.respond object, func, params
   defp respond(:box, object, func, params), do: WindowProcess.Box.respond object, func, params
+  defp respond(:text_box, object, func, params), do: WindowProcess.TextBox.respond object, func, params
   defp respond(type, _object, _func, _params), do: raise {:uknown_type, type}
 
 end
