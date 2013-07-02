@@ -7,7 +7,7 @@ defmodule Widget do
 
   def random_id(), do: quote do: :random.uniform |> float_to_binary |> binary_to_atom
 
-  defrecord Button, id: nil, options: []
+  defrecord Button, id: :_, options: []
   defmacro button(id, options//[]) do
     quote do: Widget.Button.new id: unquote(id), options: unquote(options)
   end
@@ -29,7 +29,7 @@ defmodule Widget do
     quote do: Widget.Frame.new id: unquote(id), title: unquote(title), options: unquote(options), children: unquote(children)
   end
   
-  defrecord Box, id: nil, orientation: nil, options: [], children: []
+  defrecord Box, id: :_, orientation: nil, options: [], children: []
   defmacro box(orientation, options//[], children//[]) do
     if children==[] do
       children=Keyword.get options, :do, []
@@ -52,7 +52,7 @@ defmodule Widget do
     quote do: Widget.Box.new id: unquote(idi), orientation: unquote(orientation), options: unquote(options), children: unquote(children)
   end
 
-  defrecord TextBox, id: nil, options: []
+  defrecord TextBox, id: :_, options: []
   defmacro text_box(id, options//[]) do
     quote do: Widget.TextBox.new id: unquote(id), options: unquote(options)
   end
