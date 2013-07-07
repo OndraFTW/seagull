@@ -8,7 +8,7 @@ defmodule Compiler.TextBox do
     parent=Keyword.get data, :wxparent
     pid=Keyword.get data, :pid
     my_pid=Keyword.get options, :pid, pid
-    wxitem = :wxTextCtrl.new parent, Constant.wxID_ANY, pre
+    wxitem = :wxTextCtrl.new parent, Constant.wxID_ANY, [{:style, 1024}|pre]
     compile_options(wxitem, id, post, my_pid)
     [{id, [type: :text_box, wxobject: wxitem, id: id, pid: my_pid]++data}]
   end
@@ -40,7 +40,8 @@ defmodule Compiler.TextBox do
 
   defp react(_object, _id, [], _pid), do: true
   defp react(object, id, [event|tail], pid) do
-    if Event.Mouse.react(object, id, event, pid) do
+    if Event.TextBox.react(object, id, event, pid) or
+       Event.Mouse.react(object, id, event, pid) do
       react object, id, tail, pid
     else
       raise {:uknown_event, event}

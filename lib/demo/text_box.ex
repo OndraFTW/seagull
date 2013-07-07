@@ -20,6 +20,10 @@ defmodule Demo.TextBox do
           text_box :count_box, size: {245, 33}, value: "You clicked on button: 0"
           button :count_button, label: "Click me", react: [:click]
         end
+        box :horizontal do
+          text_box :left_box, react: [:update]
+          text_box :right_box, react: [:enter_pressed]
+        end
       end
     end
     pid=WindowProcess.spawn f
@@ -45,6 +49,16 @@ defmodule Demo.TextBox do
             count=count+1
             text=Regex.replace %r/([0-9]+)/, text, integer_to_binary(count)
             send pid, :count_box, :set_value, text
+        end
+        from widget: :left_box do
+          :update->
+            value=send pid, :left_box, :get_value
+            send pid, :right_box, :set_value, value
+        end
+        from widget: :right_box do
+          :enter_pressed->
+            value=send pid, :right_box, :get_value
+            send pid, :left_box, :set_value, value
         end
       end
     end
