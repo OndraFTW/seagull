@@ -1,6 +1,7 @@
 defmodule Compiler.Button do
   
   require Constant
+  require Bitwise
 
   def compile(id, options, data) do
     if id==:_, do: id=Compiler.random_id
@@ -33,6 +34,10 @@ defmodule Compiler.Button do
       :bottom->Constant.wxBU_BOTTOM
       :right->Constant.wxBU_RIGHT
       :left->Constant.wxBU_LEFT
+      :top_left->Bitwise.bor Constant.wxBU_TOP, Constant.wxBU_LEFT
+      :top_right->Bitwise.bor Constant.wxBU_TOP, Constant.wxBU_RIGHT
+      :bottom_left->Bitwise.bor Constant.wxBU_BOTTOM, Constant.wxBU_LEFT
+      :bottom_right->Bitwise.bor Constant.wxBU_BOTTOM, Constant.wxBU_RIGHT
     end
     divide_options tail, [{:style, s}|pre], post
   end

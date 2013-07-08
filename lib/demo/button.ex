@@ -12,13 +12,19 @@ defmodule Demo.Button do
   @doc"Shows frame with different buttons."
   def start() do
     #define frame f
-    f=frame :main_frame, "This is frame", size: {800, 700}, position: {50, 50}, react: [:close] do
+    f=frame :main_frame, "This is frame", size: {800, 800}, react: [:close] do
       box :vertical do
         box :horizontal do
-          button :_, label: "This button's label is\ntop aligned.", size: {170, 150}, label_align: :top
-          button :_, label: "This button's label is\nbottom aligned.", size: {170, 150}, label_align: :bottom
-          button :_, label: "This button's label is\nright aligned.", size: {170, 150}, label_align: :right
-          button :_, label: "This button's label is\nleft aligned.", size: {170, 150}, label_align: :left
+          button :_, label: "This button's label is\ntop aligned.", size: {200, 200}, label_align: :top
+          button :_, label: "This button's label is\nbottom aligned.", size: {200, 200}, label_align: :bottom
+          button :_, label: "This button's label is\nright aligned.", size: {200, 200}, label_align: :right
+          button :_, label: "This button's label is\nleft aligned.", size: {200, 200}, label_align: :left
+        end
+        box :horizontal do
+          button :_, label: "This button's label is\ntop left aligned.", size: {200, 200}, label_align: :top_left
+          button :_, label: "This button's label is\nbottom left aligned.", size: {200, 200}, label_align: :bottom_left
+          button :_, label: "This button's label is\ntop right aligned.", size: {200, 200}, label_align: :top_right
+          button :_, label: "This button's label is\nbottom right aligned.", size: {200, 200}, label_align: :bottom_right
         end
         box :horizontal do
           button :_, label: "This button is\ndisabled.", disabled: true
