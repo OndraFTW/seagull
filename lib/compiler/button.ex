@@ -19,13 +19,13 @@ defmodule Compiler.Button do
   defp divide_options([], pre, post), do: {pre, post}
   defp divide_options([{:label, label}|tail], pre, post) when is_list(label), do: divide_options tail, [{:label, label}|pre], post
   defp divide_options([{:label, label}|tail], pre, post), do: divide_options tail, [{:label, binary_to_list(label)}|pre], post
-  defp divide_options([{:disabled, true}|tail], pre, post), do: divide_options tail, pre, [:disabled|post]
-  defp divide_options([{:default, true}|tail], pre, post), do: divide_options tail, pre, [:default|post]
+  defp divide_options([{:disabled, value}|tail], pre, post), do: if value, do: divide_options(tail, pre, [:disabled|post]), else: divide_options(tail, pre, post)
+  defp divide_options([{:default, value}|tail], pre, post), do: if value, do: divide_options(tail, pre, [:default|post]), else: divide_options(tail, pre, post)
   defp divide_options([{:position, {w, h}}|tail], pre, post), do: divide_options tail, [{:pos, {w, h}}|pre], post
   defp divide_options([{:size, {w, h}}|tail], pre, post), do: divide_options tail, [{:size, {w, h}}|pre], post
   defp divide_options([{:react, events}|tail], pre, post), do: divide_options tail, pre, [{:react, events}|post]
-  defp divide_options([{:exact_fit, true}|tail], pre, post), do: divide_options tail, [{:style, Constant.wxBU_EXACTFIT}|pre], post
-  defp divide_options([{:no_border, true}|tail], pre, post), do: divide_options tail, [{:style, Constant.wxNO_BORDER}|pre], post
+  defp divide_options([{:exact_fit, value}|tail], pre, post), do: if value, do: divide_options(tail, [{:style, Constant.wxBU_EXACTFIT}|pre], post), else: divide_options(tail, pre, post)
+  defp divide_options([{:no_border, value}|tail], pre, post), do: if value, do: divide_options(tail, [{:style, Constant.wxNO_BORDER}|pre], post), else: divide_options(tail, pre, post)
   defp divide_options([{:pid, _}|tail], pre, post), do: divide_options tail, pre, post
   defp divide_options([{:children_pid, _}|tail], pre, post), do: divide_options tail, pre, post
   defp divide_options([{:label_align, style}|tail], pre, post) do
