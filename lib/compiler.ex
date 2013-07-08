@@ -3,6 +3,7 @@ defmodule Compiler do
   @moduledoc"Provides functions to compile records into wxObjects"
 
   require Constant
+  require Bitwise
 
   def compile(Widget.Frame[id: id, title: title, options: options, children: children], pid//self) do
     Compiler.Frame.compile id, title, options, children, wxparent: :wx.null, pid: pid, parent: nil
@@ -27,6 +28,11 @@ defmodule Compiler do
   def random_id() do
     :random.uniform(4294967295) |> integer_to_binary |> binary_to_atom
   end
+
+  def fuse_styles(list), do: fuse_styles list, 0, []
+  defp fuse_styles([], style, result), do: [{:style, style}|result]
+  defp fuse_styles([{:style, val}|tail], style, result), do: fuse_styles tail, Bitwise.bor(val, style), result
+  defp fuse_styles([o|tail], style, result), do: fuse_styles tail, style, [o|result]
 
   def compile_children([], _data, result), do: result
   def compile_children([child|tail], data, result),

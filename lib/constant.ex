@@ -23,4 +23,5 @@ defmodule Constant do
   defmacro wxTE_CENTER, do: 256
   defmacro wxTE_CENTRE, do: 256
   defmacro wxTE_PROCESS_ENTER, do: 1024
+  defmacro wxTE_MULTILINE, do: 32
 end

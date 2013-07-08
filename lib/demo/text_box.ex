@@ -24,6 +24,9 @@ defmodule Demo.TextBox do
           text_box :left_box, react: [:update]
           text_box :right_box, react: [:enter_pressed]
         end
+        box :horizontal do
+          text_box :multiline_text_box, multiline: true, value: "This is\nmultiline\ntext box."
+        end
       end
     end
     pid=WindowProcess.spawn f

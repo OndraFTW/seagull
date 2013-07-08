@@ -5,10 +5,11 @@ defmodule Compiler.TextBox do
   def compile(id, options, data) do
     if id==:_, do: id=Compiler.random_id
     {pre, post}=divide_options options
+    pre=Compiler.fuse_styles [{:style, 1024}|pre]
     parent=Keyword.get data, :wxparent
     pid=Keyword.get data, :pid
     my_pid=Keyword.get options, :pid, pid
-    wxitem = :wxTextCtrl.new parent, Constant.wxID_ANY, [{:style, 1024}|pre]
+    wxitem = :wxTextCtrl.new parent, Constant.wxID_ANY, pre
     compile_options(wxitem, id, post, my_pid)
     [{id, [type: :text_box, wxobject: wxitem, id: id, pid: my_pid]++data}]
   end
@@ -18,6 +19,7 @@ defmodule Compiler.TextBox do
   defp divide_options([{:value, value}|tail], pre, post), do: divide_options tail, [{:value, binary_to_list(value)}|pre], post
   defp divide_options([{:position, {x, y}}|tail], pre, post), do: divide_options tail, [{:pos, {x, y}}|pre], post
   defp divide_options([{:size, {w, h}}|tail], pre, post), do: divide_options tail, [{:size, {w, h}}|pre], post
+  defp divide_options([{:multiline, value}|tail], pre, post), do: if value, do: divide_options(tail, [{:style, Constant.wxTE_MULTILINE}|pre], post), else: divide_options(tail, pre, post)
   defp divide_options([{:react, events}|tail], pre, post), do: divide_options tail, pre, [{:react, events}|post]
   defp divide_options([{:text_align, value}|tail], pre, post) do
     v=case value do

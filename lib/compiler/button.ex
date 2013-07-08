@@ -5,6 +5,7 @@ defmodule Compiler.Button do
   def compile(id, options, data) do
     if id==:_, do: id=Compiler.random_id
     {pre, post}=divide_options options
+    pre=Compiler.fuse_styles pre
     parent=Keyword.get data, :wxparent
     pid=Keyword.get data, :pid
     my_pid=Keyword.get options, :pid, pid

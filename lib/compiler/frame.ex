@@ -5,6 +5,7 @@ defmodule Compiler.Frame do
     if is_binary(title), do: title=binary_to_list title
     if id==:_, do: id=Compiler.random_id
     {pre, post}=divide_options options
+    pre=Compiler.fuse_styles pre
     pid=Keyword.get data, :pid
     children_pid=Keyword.get options, :children_pid, pid
     my_pid=Keyword.get options, :pid, pid
