@@ -3,7 +3,7 @@ defmodule Demo.TextBox do
   import Widget
 
   def start() do
-    f=frame :main_frame, "Main frame", react: [:close] do
+    f=frame :main_frame, "Main frame", size: {500,500}, react: [:close] do
       box :vertical do
         box :horizontal do
           text_box :_, value: "Value", size: {100,100}, text_align: :left
@@ -25,7 +25,11 @@ defmodule Demo.TextBox do
           text_box :right_box, react: [:enter_pressed]
         end
         box :horizontal do
-          text_box :multiline_text_box, multiline: true, value: "This is\nmultiline\ntext box."
+          text_box :_, multiline: true, size: {100, 100}, value: "This is\nmultiline\ntext box."
+          text_box :_, multiline: true, size: {100, 100}, value: "This text box dont wrap lines.", wrap: :dont
+          text_box :_, multiline: true, size: {100, 100}, value: "This text box wrap lines at any character.", wrap: :character
+          text_box :_, multiline: true, size: {100, 100}, value: "This text box wrap lines at word boundaries.", wrap: :word
+          text_box :_, multiline: true, size: {100, 100}, value: "This text box wrap lines at word boundaries or at any character if word is longer than window. This is the default.", wrap: :best
         end
       end
     end

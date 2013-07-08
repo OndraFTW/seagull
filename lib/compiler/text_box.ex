@@ -30,6 +30,15 @@ defmodule Compiler.TextBox do
     end
     divide_options tail, [{:style, v}|pre], post
   end
+  defp divide_options([{:wrap, value}|tail], pre, post) do
+    v=case value do
+      :dont->Constant.wxTE_DONTWRAP
+      :character->Constant.wxTE_CHARWRAP
+      :word->Constant.wxTE_WORDWRAP
+      :best->Constant.wxTE_BESTWRAP
+    end
+    divide_options tail, [{:style, v}|pre], post
+  end
   
   defp compile_options(_button, _id, [], _pid), do: true
   defp compile_options(button, id, [head|tail], pid) do

@@ -24,4 +24,8 @@ defmodule Constant do
   defmacro wxTE_CENTRE, do: 256
   defmacro wxTE_PROCESS_ENTER, do: 1024
   defmacro wxTE_MULTILINE, do: 32
+  defmacro wxTE_BESTWRAP, do: 0
+  defmacro wxTE_WORDWRAP, do: 1
+  defmacro wxTE_CHARWRAP, do: 16384
+  defmacro wxTE_DONTWRAP, do: 1073741824
 end
