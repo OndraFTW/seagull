@@ -20,6 +20,7 @@ defmodule Compiler.TextBox do
   defp divide_options([{:position, {x, y}}|tail], pre, post), do: divide_options tail, [{:pos, {x, y}}|pre], post
   defp divide_options([{:size, {w, h}}|tail], pre, post), do: divide_options tail, [{:size, {w, h}}|pre], post
   defp divide_options([{:multiline, value}|tail], pre, post), do: if value, do: divide_options(tail, [{:style, Constant.wxTE_MULTILINE}|pre], post), else: divide_options(tail, pre, post)
+  defp divide_options([{:readonly, value}|tail], pre, post), do: if value, do: divide_options(tail, [{:style, Constant.wxTE_READONLY}|pre], post), else: divide_options(tail, pre, post)
   defp divide_options([{:react, events}|tail], pre, post), do: divide_options tail, pre, [{:react, events}|post]
   defp divide_options([{:text_align, value}|tail], pre, post) do
     v=case value do

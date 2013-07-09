@@ -28,4 +28,5 @@ defmodule Constant do
   defmacro wxTE_WORDWRAP, do: 1
   defmacro wxTE_CHARWRAP, do: 16384
   defmacro wxTE_DONTWRAP, do: 1073741824
+  defmacro wxTE_READONLY, do: 16
 end

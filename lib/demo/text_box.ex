@@ -19,6 +19,7 @@ defmodule Demo.TextBox do
         box :horizontal do
           text_box :count_box, size: {245, 33}, value: "You clicked on button: 0"
           button :count_button, label: "Click me", react: [:click]
+          text_box :_, value: "This text box cant be adited.", readonly: true
         end
         box :horizontal do
           text_box :left_box, react: [:update]
