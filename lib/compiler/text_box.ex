@@ -8,6 +8,7 @@ defmodule Compiler.TextBox do
     pre=Compiler.fuse_styles [{:style, 1024}|pre]
     parent=Keyword.get data, :wxparent
     pid=Keyword.get data, :pid
+    data=Keyword.delete data, :pid
     my_pid=Keyword.get options, :pid, pid
     wxitem = :wxTextCtrl.new parent, Constant.wxID_ANY, pre
     compile_options(wxitem, id, post, my_pid)

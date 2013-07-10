@@ -7,6 +7,7 @@ defmodule Compiler.Frame do
     {pre, post}=divide_options options
     pre=Compiler.fuse_styles pre
     pid=Keyword.get data, :pid
+    data=Keyword.delete data, :pid
     children_pid=Keyword.get options, :children_pid, pid
     my_pid=Keyword.get options, :pid, pid
     parent=Keyword.get data, :wxparent

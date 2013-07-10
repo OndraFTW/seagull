@@ -10,6 +10,7 @@ defmodule Compiler.Box do
     {_pre, post}=divide_options options
     wxitem = :wxBoxSizer.new o
     pid=Keyword.get data, :pid
+    data=Keyword.delete data, :pid
     children_pid=Keyword.get options, :children_pid, pid
     my_pid=Keyword.get options, :pid, pid
     parent=Keyword.get data, :wxparent
