@@ -24,6 +24,7 @@ defmodule Compiler.Frame do
   defp divide_options([{:react, events}|tail], pre, post), do: divide_options tail, pre, [{:react, events}|post]
   defp divide_options([{:pid, _}|tail], pre, post), do: divide_options tail, pre, post
   defp divide_options([{:children_pid, _}|tail], pre, post), do: divide_options tail, pre, post
+  defp divide_options([{:menu_bar, mb}|tail], pre, post), do: divide_options tail, pre, [{:menu_bar, mb}|post]
   defp divide_options([{:border, border}|tail], pre, post) do
     o=case border do
       :default->wxBORDER_DEFAULT
@@ -45,6 +46,10 @@ defmodule Compiler.Frame do
     compile_options frame, id, tail, pid
   end
 
+  defp compile_option(frame, id, {:menu_bar, mb}, pid) do
+    [{_bm_id, compiled_menu_bar}|_tail]=Compiler.compile_child(mb, [wxparent: frame, parent: id, pid: pid])
+    :wxFrame.setMenuBar frame, Keyword.get(compiled_menu_bar, :wxobject)
+  end
   defp compile_option(frame, id, {:react, events}, pid) do
     if not Enum.member?(events, :closed) do
       my_pid=self
@@ -55,7 +60,8 @@ defmodule Compiler.Frame do
 
   defp react(_frame, _id, [], _pid), do: nil
   defp react(frame, id, [event|tail], pid) do
-    if Event.Frame.react(frame, id, event, pid) or Event.Mouse.react(frame, id, event, pid) or
+    if Event.Frame.react(frame, id, event, pid) or
+      Event.Mouse.react(frame, id, event, pid) or
       Event.TopLevelWindow.react(frame, id, event, pid) do
       react frame, id, tail, pid
     else

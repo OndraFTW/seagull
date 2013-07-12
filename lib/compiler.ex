@@ -25,6 +25,14 @@ defmodule Compiler do
     Compiler.TextBox.compile id, options, data
   end
 
+  def compile_child(Widget.MenuBar[id: id, options: options, children: children], data) do
+    Compiler.MenuBar.compile id, options, children, data
+  end
+
+  def compile_child(Widget.Menu[id: id, title: title, options: options, children: children], data) do
+    Compiler.Menu.compile id, title, options, children, data
+  end
+
   def random_id() do
     :random.uniform(4294967295) |> integer_to_binary |> binary_to_atom
   end
