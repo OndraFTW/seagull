@@ -33,6 +33,10 @@ defmodule Compiler do
     Compiler.Menu.compile id, title, options, children, data
   end
 
+  def compile_child(Widget.MenuItem[id: id, title: title, options: options], data) do
+    Compiler.MenuItem.compile id, title, options, data
+  end
+
   def random_id() do
     :random.uniform(4294967295) |> integer_to_binary |> binary_to_atom
   end

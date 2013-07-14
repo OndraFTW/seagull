@@ -105,9 +105,9 @@ defmodule Widget do
     quote do: Widget.Menu.new id: unquote(idi), title: unquote(title), options: unquote(options), children: unquote(children)
   end
 
-  defrecord MenuItem, id: :_, options: []
-  defmacro menu_item(id, options//[]) do
-    quote do: Widget.MenuItem.new id: unquote(id), options: unquote(options)
+  defrecord MenuItem, id: :_, title: "", options: []
+  defmacro menu_item(id, title, options//[]) do
+    quote do: Widget.MenuItem.new id: unquote(id), title: unquote(title), options: unquote(options)
   end
 
 end
