@@ -11,6 +11,7 @@ defmodule Compiler.MenuBar do
     my_pid=Keyword.get options, :pid, pid
     compile_options(wxitem, id, post, my_pid)
     children=Compiler.compile_children children, [wxparent: wxitem, parent: id, pid: children_pid], []
+    :wxFrame.setMenuBar Keyword.get(data, :wxparent), wxitem
     [{id, [type: :menu_bar, wxobject: wxitem, id: id, pid: my_pid]++data}|children]
   end
 

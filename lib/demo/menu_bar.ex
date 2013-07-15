@@ -4,16 +4,39 @@ defmodule Demo.MenuBar do
 
   def start() do
     mb=menu_bar do
-      menu "File" do
-        menu_item :_, "First"
+      menu "File", id: :file_menu, react: [:open, :close, :highlight] do
+        menu_item :first, "First", react: [:select]
         menu_item :_, "Second"
+        menu_item :_, "Third"
+        menu_item :_, "Fourth"
       end
     end
 
-    f=frame :frame, "A", menu_bar: mb do
-      button :_
-    end
+    f=frame :frame, "A", menu_bar: mb, react: [:close]
     
-    WindowProcess.spawn f
-  end 
+    pid=WindowProcess.spawn f
+
+    reaction pid
+
+  end
+
+  defp reaction(pid) do
+    continue=true
+    receive_event do
+      from pid: ^pid do
+        from widget: :frame do
+          :close->
+            pid<-:destroy
+            continue=false
+        end
+        from widget: :file_menu do
+          :open->IO.puts "Menu File opened."
+          :close->IO.puts "Menu File closed."
+          :highlight->IO.puts "Menu highlight."
+        end
+      end
+    end
+    if continue, do: reaction pid
+  end
+
 end

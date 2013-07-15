@@ -24,6 +24,9 @@ defmodule WindowProcess do
       {pid, id, function, params}->
         window=send window, pid, id, function, params
         rec window, pid
+      {:wx, id, object, data, event}->
+        Event.translate id, object, data, event, window
+        rec window, pid
       a-> 
         IO.inspect a
         rec window, pid

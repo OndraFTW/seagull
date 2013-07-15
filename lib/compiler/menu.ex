@@ -10,16 +10,33 @@ defmodule Compiler.Menu do
     data=Keyword.delete data, :pid
     children_pid=Keyword.get options, :children_pid, pid
     my_pid=Keyword.get options, :pid, pid
-    compile_options(wxitem, id, post, my_pid)
+    data=[type: :menu, wxobject: wxitem, id: id, pid: my_pid]++data
+    compile_options(data, post)
     children=Compiler.compile_children children, [wxparent: wxitem, parent: id, pid: children_pid], []
-    [{id, [type: :menu, wxobject: wxitem, id: id, pid: my_pid]++data}|children]
+    [{id, data}|children]
   end
 
   defp divide_options(options), do: divide_options options,  [], []
   defp divide_options([], pre, post), do: {pre, post}
   defp divide_options([{:pid, _}|tail], pre, post), do: divide_options tail, pre, post
   defp divide_options([{:children_pid, _}|tail], pre, post), do: divide_options tail, pre, post
+  defp divide_options([{:react, events}|tail], pre, post), do: divide_options tail, pre, [{:react, events}|post]
   
-  def compile_options(_box, _id, [], _pid), do: nil
+  defp compile_options(_data, []), do: nil
+  defp compile_options(data, [head|tail]) do
+    compile_option data, head
+    compile_options data, tail
+  end
+
+  defp compile_option(data, {:react, events}), do: react data, events
+
+  defp react(_data, []), do: true
+  defp react(data, [event|tail]) do
+    if Event.Menu.react(data, event) do
+      react data, tail
+    else
+      raise {:uknown_event, event}
+    end
+  end
 
 end

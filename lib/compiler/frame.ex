@@ -12,9 +12,18 @@ defmodule Compiler.Frame do
     my_pid=Keyword.get options, :pid, pid
     parent=Keyword.get data, :wxparent
     wxitem = :wxFrame.new parent, Constant.wxID_ANY, title, pre
+    data=[type: :frame, wxobject: wxitem, id: id, pid: my_pid]++data
     compile_options(wxitem, id, post, my_pid)
+    menu_bar=compile_menu_bar data, Keyword.get(options, :menu_bar, nil)
     children=Compiler.compile_children children, [wxparent: wxitem, parent: id, pid: children_pid], []
-    [{id, [type: :frame, wxobject: wxitem, id: id, pid: my_pid]++data}|children]
+    [{id, data}|menu_bar]++children
+  end
+
+  defp compile_menu_bar(_data, nil) do
+    []
+  end
+  defp compile_menu_bar(data, mb) do
+    Compiler.compile_child mb, [wxparent: Keyword.get(data, :wxobject), parent: Keyword.get(data, :id), pid: Keyword.get(data, :pid)]
   end
 
   defp divide_options(options), do: divide_options options, [], []
@@ -24,7 +33,7 @@ defmodule Compiler.Frame do
   defp divide_options([{:react, events}|tail], pre, post), do: divide_options tail, pre, [{:react, events}|post]
   defp divide_options([{:pid, _}|tail], pre, post), do: divide_options tail, pre, post
   defp divide_options([{:children_pid, _}|tail], pre, post), do: divide_options tail, pre, post
-  defp divide_options([{:menu_bar, mb}|tail], pre, post), do: divide_options tail, pre, [{:menu_bar, mb}|post]
+  defp divide_options([{:menu_bar, _}|tail], pre, post), do: divide_options tail, pre, post
   defp divide_options([{:border, border}|tail], pre, post) do
     o=case border do
       :default->wxBORDER_DEFAULT
@@ -46,10 +55,6 @@ defmodule Compiler.Frame do
     compile_options frame, id, tail, pid
   end
 
-  defp compile_option(frame, id, {:menu_bar, mb}, pid) do
-    [{_bm_id, compiled_menu_bar}|_tail]=Compiler.compile_child(mb, [wxparent: frame, parent: id, pid: pid])
-    :wxFrame.setMenuBar frame, Keyword.get(compiled_menu_bar, :wxobject)
-  end
   defp compile_option(frame, id, {:react, events}, pid) do
     if not Enum.member?(events, :closed) do
       my_pid=self
