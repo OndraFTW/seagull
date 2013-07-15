@@ -13,7 +13,7 @@ defmodule Compiler.Frame do
     parent=Keyword.get data, :wxparent
     wxitem = :wxFrame.new parent, Constant.wxID_ANY, title, pre
     data=[type: :frame, wxobject: wxitem, id: id, pid: my_pid]++data
-    compile_options(wxitem, id, post, my_pid)
+    compile_options(data, post)
     menu_bar=compile_menu_bar data, Keyword.get(options, :menu_bar, nil)
     children=Compiler.compile_children children, [wxparent: wxitem, parent: id, pid: children_pid], []
     [{id, data}|menu_bar]++children
@@ -49,26 +49,27 @@ defmodule Compiler.Frame do
     divide_options tail, [{:style, o}|pre], post
   end
   
-  defp compile_options(_frame, _id, [], _pid), do: nil
-  defp compile_options(frame, id, [head|tail], pid) do
-    compile_option frame, id, head, pid
-    compile_options frame, id, tail, pid
+  defp compile_options(_data, []), do: nil
+  defp compile_options(data, [head|tail]) do
+    compile_option data, head
+    compile_options data, tail
   end
 
-  defp compile_option(frame, id, {:react, events}, pid) do
+  defp compile_option(data, {:react, events}) do
     if not Enum.member?(events, :closed) do
       my_pid=self
+      frame=Keyword.get data, :wxobject
       :wxEvtHandler.connect frame, :close_window, [{:callback, fn(_, _)-> my_pid<-:destroy end}]
     end
-    react frame, id, events, pid
+    react data, events
   end
 
-  defp react(_frame, _id, [], _pid), do: nil
-  defp react(frame, id, [event|tail], pid) do
-    if Event.Frame.react(frame, id, event, pid) or
-      Event.Mouse.react(frame, id, event, pid) or
-      Event.TopLevelWindow.react(frame, id, event, pid) do
-      react frame, id, tail, pid
+  defp react(_data, []), do: nil
+  defp react(data, [event|tail]) do
+    if Event.Frame.react(data, event) or
+      Event.Mouse.react(Keyword.get(data, :wxobject), Keyword.get(data, :id), event, Keyword.get(data, :pid)) or
+      Event.TopLevelWindow.react(data, event) do
+      react data, tail
     else
       raise {:uknown_event, event}
     end

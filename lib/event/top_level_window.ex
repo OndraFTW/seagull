@@ -1,25 +1,36 @@
 defmodule Event.TopLevelWindow do
 
-  def react(frame, id, :create, pid) do
-   my_pid=self
-   :wxEvtHandler.connect frame, :create, [{:callback, fn(_, _)-> pid<-[my_pid, id, :create] end}]
-   true
+  @events [
+      close: :close_window,
+      create: :create,
+      destroy: :destroy,
+      maximize: :aui_pane_maximize,
+      minimize: :iconize
+    ]
+
+  def get_events() do
+    @events
   end
-  def react(frame, id, :destroy, pid) do
-   my_pid=self
-   :wxEvtHandler.connect frame, :destroy, [{:callback, fn(_, _)-> pid<-[my_pid, id, :destroy] end}]
-   true
+
+  lc {sg, wx} inlist @events do
+    def react(data, unquote(sg)) do
+      :wxEvtHandler.connect Keyword.get(data, :wxobject), unquote(wx), [userData: {Keyword.get(data, :type), Keyword.get(data, :id)}]
+      true
+    end
   end
-  def react(frame, id, :maximize, pid) do
-   my_pid=self
-   :wxEvtHandler.connect frame, :aui_pane_maximize, [{:callback, fn(_, _)-> pid<-[my_pid, id, :maximize] end}]
-   true
+
+  def react(_data, _event), do: false
+
+  lc {sg, wx} inlist @events do
+    def translate(_wxid, _wxobject, id, {_, unquote(wx)}, window) do
+      widget=Keyword.get window, id
+      pid=Keyword.get widget, :pid
+      pid<-[self, id, unquote(sg)]
+      true
+    end
   end
-  def react(frame, id, :minimize, pid) do
-   my_pid=self
-   :wxEvtHandler.connect frame, :iconize, [{:callback, fn(_, _)-> pid<-[my_pid, id, :minimize] end}]
-   true
+  def translate(_wx_id, _object, _id, _event, _window) do
+    false
   end
-  def react(_frame, _id, _event, _pid), do: false
 
 end

@@ -12,7 +12,7 @@ defmodule Event.Menu do
 
   lc {sg, wx} inlist @events do
     def react(data, unquote(sg)) do
-      :wxEvtHandler.connect Keyword.get(data, :wxobject), unquote(wx), [userData: {:menu, Keyword.get(data, :id)}]
+      :wxEvtHandler.connect Keyword.get(data, :wxobject), unquote(wx), [userData: {Keyword.get(data, :type), Keyword.get(data, :id)}]
       true
     end
   end
