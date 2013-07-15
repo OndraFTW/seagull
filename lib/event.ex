@@ -1,11 +1,23 @@
 defmodule Event do
-  
+
   def translate(wx_id, object, {:menu, id}, event, window) do
     if not Event.Menu.translate wx_id, object, id, event, window do
-      raise :uknown_event
+      raise {:uknown_event, event}
     end
   end
- 
+
+  def translate(wx_id, object, {:button, id}, event, window) do
+    if not Event.Button.translate wx_id, object, id, event, window do
+      raise {:uknown_event, event}
+    end
+  end
+
+  def translate(wx_id, object, {:text_box, id}, event, window) do
+    if not Event.TextBox.translate wx_id, object, id, event, window do
+      raise {:uknown_event, event}
+    end
+  end
+
   def get_widget_by_wx_ref(ref, []) do
     raise {:widget_not_found, ref}
   end

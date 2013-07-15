@@ -12,8 +12,9 @@ defmodule Compiler.Button do
     data=Keyword.delete data, :pid
     my_pid=Keyword.get options, :pid, pid
     wxitem = :wxButton.new parent, Constant.wxID_ANY, pre
-    compile_options(wxitem, id, post, my_pid)
-    [{id, [type: :button, wxobject: wxitem, id: id, pid: my_pid]++data}]
+    data=[type: :button, wxobject: wxitem, id: id, pid: my_pid]++data
+    compile_options(data, post)
+    [{id, data}]
   end
 
   defp divide_options(options), do: divide_options options, [], []
@@ -43,21 +44,21 @@ defmodule Compiler.Button do
     divide_options tail, [{:style, s}|pre], post
   end
   
-  defp compile_options(_button, _id, [], _pid), do: true
-  defp compile_options(button, id, [head|tail], pid) do
-    compile_option button, id, head, pid
-    compile_options button, id, tail, pid
+  defp compile_options(_data, []), do: true
+  defp compile_options(data, [head|tail]) do
+    compile_option data, head
+    compile_options data, tail
   end
 
-  defp compile_option(button, id, {:react, events}, pid), do: button_react button, id, events, pid
-  defp compile_option(button, _id, {:label, label}, _pid), do: :wxButton.setLabel button, label
-  defp compile_option(button, _id, :disabled, _pid), do: :wxButton.disable button
-  defp compile_option(button, _id, :default, _pid), do: :wxButton.setDefault button
+  defp compile_option(data, {:react, events}), do: react data, events
+  defp compile_option(data, {:label, label}), do: :wxButton.setLabel Keyword.get(data, :wxobject), label
+  defp compile_option(data, :disabled), do: :wxButton.disable Keyword.get(data, :wxobject)
+  defp compile_option(data, :default), do: :wxButton.setDefault Keyword.get(data, :wxobject)
 
-  defp button_react(_button, _id, [], _pid), do: true
-  defp button_react(button, id, [event|tail], pid) do
-    if Event.Button.react(button, id, event, pid) or Event.Mouse.react(button, id, event, pid) do
-      button_react button, id, tail, pid
+  defp react(_data, []), do: true
+  defp react(data, [event|tail]) do
+    if Event.Button.react(data, event) or Event.Mouse.react(Keyword.get(data, :wxobject), Keyword.get(data, :id), event, Keyword.get(data, :pid)) do
+      react data, tail
     else
       raise {:uknown_event, event}
     end

@@ -59,13 +59,11 @@ defmodule Demo.TextBox do
             send pid, :count_box, :set_value, text
         end
         from widget: :left_box do
-          :update->
-            value=send pid, :left_box, :get_value
+          :update, value->
             send pid, :right_box, :set_value, value
         end
         from widget: :right_box do
-          :enter_pressed->
-            value=send pid, :right_box, :get_value
+          :enter_pressed, value->
             send pid, :left_box, :set_value, value
         end
       end
