@@ -5,10 +5,10 @@ defmodule Demo.MenuBar do
   def start() do
     mb=menu_bar do
       menu "File", id: :file_menu, react: [:open, :close, :highlight, :select] do
-        menu_item :first, "First"
-        menu_item :_, "Second"
-        menu_item :_, "Third"
-        menu_item :_, "Fourth"
+        menu_item "First"
+        menu_item "Second"
+        menu_item "Third"
+        menu_item "Fourth"
       end
     end
 

@@ -53,8 +53,14 @@ defmodule Widget do
   end
 
   defrecord TextBox, id: :_, options: []
-  defmacro text_box(id, options//[]) do
-    quote do: Widget.TextBox.new id: unquote(id), options: unquote(options)
+  defmacro text_box(options//[]) do
+    if Keyword.has_key?(options, :id) do
+      idi=Keyword.get options, :id
+      options=Keyword.delete options, :id
+    else
+      idi=:_
+    end
+    quote do: Widget.TextBox.new id: unquote(idi), options: unquote(options)
   end
 
   defrecord MenuBar, id: :_, options: [], children: []
@@ -106,8 +112,14 @@ defmodule Widget do
   end
 
   defrecord MenuItem, id: :_, title: "", options: []
-  defmacro menu_item(id, title, options//[]) do
-    quote do: Widget.MenuItem.new id: unquote(id), title: unquote(title), options: unquote(options)
+  defmacro menu_item(title, options//[]) do
+    if Keyword.has_key?(options, :id) do
+      idi=Keyword.get options, :id
+      options=Keyword.delete options, :id
+    else
+      idi=:_
+    end
+    quote do: Widget.MenuItem.new id: unquote(idi), title: unquote(title), options: unquote(options)
   end
 
 end

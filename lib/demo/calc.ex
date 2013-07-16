@@ -8,7 +8,7 @@ defmodule Demo.Calc do
   def start() do
     f=frame :main_frame, "Calculator", size: {200,250}, react: [:close] do
       box :vertical do
-        text_box :display, value: "0", size: {200,50}, text_align: :right, readonly: true
+        text_box id: :display, value: "0", size: {200,50}, text_align: :right, readonly: true
         box :horizontal do
           button :_7, label: "7", size: {50,50}, react: [:click]
           button :_8, label: "8", size: {50,50}, react: [:click]

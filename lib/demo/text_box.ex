@@ -6,31 +6,31 @@ defmodule Demo.TextBox do
     f=frame :main_frame, "Main frame", size: {500,500}, react: [:close] do
       box :vertical do
         box :horizontal do
-          text_box :_, value: "Value", size: {100,100}, text_align: :left
-          text_box :_, value: "Value", size: {100,100}, text_align: :center
-          text_box :_, value: "Value", size: {100,100}, text_align: :right
+          text_box value: "Value", size: {100,100}, text_align: :left
+          text_box value: "Value", size: {100,100}, text_align: :center
+          text_box value: "Value", size: {100,100}, text_align: :right
         end
         box :horizontal do
-          text_box :click_text_box, value: "Click on me.", react: [:mouse_left_up]
-          text_box :aaa_text_box, value: "A"
+          text_box id: :click_text_box, value: "Click on me.", react: [:mouse_left_up]
+          text_box id: :aaa_text_box, value: "A"
           button :a_button, label: "Add a", react: [:click]
           button :clear_button, label: "Clear", react: [:click]
         end
         box :horizontal do
-          text_box :count_box, size: {245, 33}, value: "You clicked on button: 0"
+          text_box id: :count_box, size: {245, 33}, value: "You clicked on button: 0"
           button :count_button, label: "Click me", react: [:click]
-          text_box :_, value: "This text box cant be adited.", readonly: true
+          text_box value: "This text box cant be adited.", readonly: true
         end
         box :horizontal do
-          text_box :left_box, react: [:update]
-          text_box :right_box, react: [:enter_pressed]
+          text_box id: :left_box, react: [:update]
+          text_box id: :right_box, react: [:enter_pressed]
         end
         box :horizontal do
-          text_box :_, multiline: true, size: {100, 100}, value: "This is\nmultiline\ntext box."
-          text_box :_, multiline: true, size: {100, 100}, value: "This text box dont wrap lines.", wrap: :dont
-          text_box :_, multiline: true, size: {100, 100}, value: "This text box wrap lines at any character.", wrap: :character
-          text_box :_, multiline: true, size: {100, 100}, value: "This text box wrap lines at word boundaries.", wrap: :word
-          text_box :_, multiline: true, size: {100, 100}, value: "This text box wrap lines at word boundaries or at any character if word is longer than window. This is the default.", wrap: :best
+          text_box multiline: true, size: {100, 100}, value: "This is\nmultiline\ntext box."
+          text_box multiline: true, size: {100, 100}, value: "This text box dont wrap lines.", wrap: :dont
+          text_box multiline: true, size: {100, 100}, value: "This text box wrap lines at any character.", wrap: :character
+          text_box multiline: true, size: {100, 100}, value: "This text box wrap lines at word boundaries.", wrap: :word
+          text_box multiline: true, size: {100, 100}, value: "This text box wrap lines at word boundaries or at any character if word is longer than window. This is the default.", wrap: :best
         end
       end
     end
