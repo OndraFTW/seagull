@@ -13,7 +13,8 @@ defmodule Compiler.Frame do
     parent=Keyword.get data, :wxparent
     wxitem = :wxFrame.new parent, Constant.wxID_ANY, title, pre
     data=[type: :frame, wxobject: wxitem, id: id, pid: my_pid]++data
-    compile_options(data, post)
+    compile_options data, post
+    secure_destroy wxitem, post
     menu_bar=compile_menu_bar data, Keyword.get(options, :menu_bar, nil)
     children=Compiler.compile_children children, [wxparent: wxitem, parent: id, pid: children_pid], []
     [{id, data}|menu_bar]++children
@@ -24,6 +25,20 @@ defmodule Compiler.Frame do
   end
   defp compile_menu_bar(data, mb) do
     Compiler.compile_child mb, [wxparent: Keyword.get(data, :wxobject), parent: Keyword.get(data, :id), pid: Keyword.get(data, :pid)]
+  end
+
+  defp secure_destroy(wxobject, options) do
+    destroy=true
+    react=Keyword.get options, :react, nil
+    if react do
+      if Enum.member?(react, :close) do
+        destroy=false
+      end
+    end
+    if destroy do
+      my_pid=self
+      :wxEvtHandler.connect wxobject, :close_window, [callback: fn(_, _)-> my_pid<-:destroy end]
+    end
   end
 
   defp divide_options(options), do: divide_options options, [], []
