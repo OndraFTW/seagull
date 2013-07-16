@@ -4,8 +4,8 @@ defmodule Demo.MenuBar do
 
   def start() do
     mb=menu_bar do
-      menu "File", id: :file_menu, react: [:open, :close, :highlight] do
-        menu_item :first, "First", react: [:select]
+      menu "File", id: :file_menu, react: [:open, :close, :highlight, :select] do
+        menu_item :first, "First"
         menu_item :_, "Second"
         menu_item :_, "Third"
         menu_item :_, "Fourth"
@@ -33,6 +33,7 @@ defmodule Demo.MenuBar do
           :open->IO.puts "Menu File opened."
           :close->IO.puts "Menu File closed."
           :highlight->IO.puts "Menu highlight."
+          :select->IO.puts "Menu select."
         end
       end
     end

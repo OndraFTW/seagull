@@ -16,11 +16,16 @@ defmodule Event.Button do
   end
   def react(_data, _event), do: false
 
-  def translate(_wxid, _wxobject, id, {:wxCommand, :command_button_clicked, _, _, _}, window) do
-    widget=Keyword.get window, id
-    pid=Keyword.get widget, :pid
-    pid<-[self, id, :click]
-    true
+  lc {sg, wx} inlist @events do
+    def translate(_wxid, _wxobject, id, {_, unquote(wx), _, _, _}, window) do
+      widget=Keyword.get window, id
+      pid=Keyword.get widget, :pid
+      pid<-[self, id, unquote(sg)]
+      true
+    end
+  end
+  def translate(_wxid, _wxobject, _id, _event, _window) do
+    false
   end
 
 end

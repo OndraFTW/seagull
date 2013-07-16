@@ -28,15 +28,7 @@ defmodule Compiler.Menu do
     compile_options data, tail
   end
 
-  defp compile_option(data, {:react, events}), do: react data, events
-
-  defp react(_data, []), do: true
-  defp react(data, [event|tail]) do
-    if Event.Menu.react(data, event) do
-      react data, tail
-    else
-      raise {:uknown_event, event}
-    end
-  end
+  defp compile_option(data, {:react, events}), do: Event.react data, events
+  defp compile_option(_data, option), do: raise {:uknown_option, option}
 
 end

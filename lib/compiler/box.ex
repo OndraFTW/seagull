@@ -26,6 +26,6 @@ defmodule Compiler.Box do
   defp divide_options([{:pid, _}|tail], pre, post), do: divide_options tail, pre, post
   defp divide_options([{:children_pid, _}|tail], pre, post), do: divide_options tail, pre, post
   
-  def compile_options(_box, _id, [], _pid), do: nil
+  defp compile_options(_box, _id, [], _pid), do: nil
 
 end

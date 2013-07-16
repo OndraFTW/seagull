@@ -50,18 +50,10 @@ defmodule Compiler.Button do
     compile_options data, tail
   end
 
-  defp compile_option(data, {:react, events}), do: react data, events
+  defp compile_option(data, {:react, events}), do: Event.react data, events
   defp compile_option(data, {:label, label}), do: :wxButton.setLabel Keyword.get(data, :wxobject), label
   defp compile_option(data, :disabled), do: :wxButton.disable Keyword.get(data, :wxobject)
   defp compile_option(data, :default), do: :wxButton.setDefault Keyword.get(data, :wxobject)
-
-  defp react(_data, []), do: true
-  defp react(data, [event|tail]) do
-    if Event.Button.react(data, event) or Event.Mouse.react(Keyword.get(data, :wxobject), Keyword.get(data, :id), event, Keyword.get(data, :pid)) do
-      react data, tail
-    else
-      raise {:uknown_event, event}
-    end
-  end
+  defp compile_option(_data, option), do: raise {:uknown_option, option}
 
 end

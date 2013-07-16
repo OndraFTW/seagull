@@ -49,17 +49,7 @@ defmodule Compiler.TextBox do
     compile_options data, tail
   end
 
-  defp compile_option(data, {:react, events}), do: react data, events
+  defp compile_option(data, {:react, events}), do: Event.react data, events
   defp compile_option(_data, option), do: raise {:uknowm_option, option}
-
-  defp react(_data, []), do: true
-  defp react(data, [event|tail]) do
-    if Event.TextBox.react(data, event) or
-       Event.Mouse.react(Keyword.get(data, :wxobject), Keyword.get(data, :id), event, Keyword.get(data, :pid)) do
-      react data, tail
-    else
-      raise {:uknown_event, event}
-    end
-  end
 
 end

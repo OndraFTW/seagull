@@ -1,27 +1,38 @@
 defmodule Event do
 
-  def translate(wx_id, object, {:menu, id}, event, window) do
-    if not Event.Menu.translate wx_id, object, id, event, window do
+  @event_groups [
+    menu: [Event.Menu],
+    button: [Event.Button, Event.Mouse],
+    text_box: [Event.TextBox, Event.Mouse],
+    frame: [Event.Frame, Event.TopLevelWindow, Event.Mouse]
+  ]
+
+  def react(_data, []), do: true
+  def react(data, [event|tail]) do
+    if Event.react(Keyword.get(data, :type), data, event) do
+      react data, tail
+    else
       raise {:uknown_event, event}
     end
   end
 
-  def translate(wx_id, object, {:button, id}, event, window) do
-    if not Event.Button.translate wx_id, object, id, event, window do
+  def react(data, event) do
+    if not Event.react(Keyword.get(data, :type), data, event) do
       raise {:uknown_event, event}
     end
   end
 
-  def translate(wx_id, object, {:text_box, id}, event, window) do
-    if not Event.TextBox.translate wx_id, object, id, event, window do
-      raise {:uknown_event, event}
+  lc {widget, event_groups} inlist @event_groups do
+    def react(unquote(widget), data, event) do
+      Enum.any?(unquote(event_groups), fn(group)-> group.react(data, event) end)
     end
   end
 
-  def translate(wx_id, object, {:frame, id}, event, window) do
-    if not (Event.TopLevelWindow.translate(wx_id, object, id, event, window) or
-           Event.Frame.translate(wx_id, object, id, event, window)) do
-      raise {:uknown_event, event}
+  lc {widget, event_groups} inlist @event_groups do
+    def translate(wxid, wxobject, {unquote(widget), id}, event, window) do
+      if not Enum.any?(unquote(event_groups), fn(group)-> group.translate(wxid, wxobject, id, event, window) end) do
+        raise {:uknown_event, id, event}
+      end
     end
   end
 

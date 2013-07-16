@@ -48,7 +48,7 @@ defmodule Demo.Mouse do
           :mouse_leave, {x, y}->IO.puts "Your mouse left button on position [#{x}, #{y}]"
         end
         from widget: :move_button, do: (:mouse_move, {x, y}->IO.puts "Mouse moved to [#{x}, #{y}].")
-        from widget: :wheel_button, do: (:mouse_wheel, direction->IO.puts "Mouse wheel goes #{if direction==:up, do: "up", else: "down"}.")
+        from widget: :wheel_button, do: (:mouse_wheel, _, direction->IO.puts "Mouse wheel goes #{if direction==:up, do: "up", else: "down"}.")
         from widget: :double_click_button do
           :mouse_left_double_click, {x, y}->IO.puts "You left double clicked on position [#{x}, #{y}]."
           :mouse_right_double_click, {x, y}->IO.puts "You right double clicked on position [#{x}, #{y}]."

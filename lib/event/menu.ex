@@ -3,7 +3,8 @@ defmodule Event.Menu do
   @events [
       open: :menu_open,
       close: :menu_close,
-      highlight: :menu_highlight
+      highlight: :menu_highlight,
+      select: :command_menu_selected
     ]
 
   def get_events() do
@@ -27,7 +28,7 @@ defmodule Event.Menu do
       true
     end
   end
-  def translate(_wx_id, _object, _id, _event, _window) do
+  def translate(_wxid, _wxobject, _id, _event, _window) do
     false
   end
 

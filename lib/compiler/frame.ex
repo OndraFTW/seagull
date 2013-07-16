@@ -55,24 +55,7 @@ defmodule Compiler.Frame do
     compile_options data, tail
   end
 
-  defp compile_option(data, {:react, events}) do
-    if not Enum.member?(events, :closed) do
-      my_pid=self
-      frame=Keyword.get data, :wxobject
-      :wxEvtHandler.connect frame, :close_window, [{:callback, fn(_, _)-> my_pid<-:destroy end}]
-    end
-    react data, events
-  end
-
-  defp react(_data, []), do: nil
-  defp react(data, [event|tail]) do
-    if Event.Frame.react(data, event) or
-      Event.Mouse.react(Keyword.get(data, :wxobject), Keyword.get(data, :id), event, Keyword.get(data, :pid)) or
-      Event.TopLevelWindow.react(data, event) do
-      react data, tail
-    else
-      raise {:uknown_event, event}
-    end
-  end
+  defp compile_option(data, {:react, events}), do: Event.react data, events
+  defp compile_option(_data, option), do: raise {:uknown_option, option}
 
 end

@@ -29,7 +29,7 @@ defmodule Event.TopLevelWindow do
       true
     end
   end
-  def translate(_wx_id, _object, _id, _event, _window) do
+  def translate(_wxid, _wxobject, _id, _event, _window) do
     false
   end
 

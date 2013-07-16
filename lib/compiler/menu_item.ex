@@ -18,7 +18,6 @@ defmodule Compiler.MenuItem do
 
   defp divide_options(options), do: divide_options options, [], []
   defp divide_options([], pre, post), do: {pre, post}
-  defp divide_options([{:react, events}|tail], pre, post), do: divide_options tail, pre, [{:react, events}|post]
   defp divide_options([{:pid, _}|tail], pre, post), do: divide_options tail, pre, post
   
   defp compile_options(_data, []), do: true
@@ -27,15 +26,6 @@ defmodule Compiler.MenuItem do
     compile_options data, tail
   end
 
-  defp compile_option(data, {:react, events}), do: react data, events
-
-  defp react(_data, []), do: true
-  defp react(data, [event|tail]) do
-    if Event.MenuItem.react(data, event) do
-      react data, tail
-    else
-      raise {:uknown_event, event}
-    end
-  end
+  defp compile_option(_data, option), do: raise {:uknown_option, option}
 
 end
