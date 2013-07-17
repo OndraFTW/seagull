@@ -3,7 +3,7 @@ defmodule Demo.Mouse do
   import Seagull
 
   def start() do
-    f=frame :main_frame, "This is frame", size: {700,200}, react: [:close] do
+    f=frame id: :main_frame, size: {700,200}, react: [:close] do
       box :vertical do
         box :horizontal do
           button id: :up_down_button, label: "This button reacts\non mouse down and up clicks.", react: [:mouse_left_down, :mouse_right_down,

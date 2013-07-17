@@ -10,7 +10,7 @@ defmodule Demo.Box do
   #
 
   def start()do
-    f=frame :main_frame, "This is frame", react: [:close], size: {700, 500} do
+    f=frame id: :main_frame, react: [:close], size: {700, 500} do
       box :vertical, id: :vbox do
         box :horizontal, id: :hbox do
           button id: :prepend_button, label: "Prepend button", react: [:click]

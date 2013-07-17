@@ -3,7 +3,7 @@ defmodule Demo.Frame do
   import Widget
 
   def start() do
-    f=frame :frame, "A", react: [:close, :create, :maximize, :minimize] do
+    f=frame id: :frame, title: "A", react: [:close, :create, :maximize, :minimize] do
       box :horizontal do
         button id: :title_button, label: "Add 'a' to the title", react: [:click]
         button id: :maximize_button, label: "Maximize", react: [:click]

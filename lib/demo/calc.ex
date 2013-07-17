@@ -6,7 +6,7 @@ defmodule Demo.Calc do
   require String
 
   def start() do
-    f=frame :main_frame, "Calculator", size: {200,250}, react: [:close] do
+    f=frame id: :main_frame, title: "Calculator", size: {200,250}, react: [:close] do
       box :vertical do
         text_box id: :display, value: "0", size: {200,50}, text_align: :right, readonly: true
         box :horizontal do

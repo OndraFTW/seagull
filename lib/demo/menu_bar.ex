@@ -12,7 +12,7 @@ defmodule Demo.MenuBar do
       end
     end
 
-    f=frame :frame, "A", menu_bar: mb, react: [:close]
+    f=frame id: :frame, menu_bar: mb, react: [:close]
     
     pid=WindowProcess.spawn f
 

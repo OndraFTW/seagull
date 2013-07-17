@@ -12,7 +12,7 @@ defmodule Demo.Button do
   @doc"Shows frame with different buttons."
   def start() do
     #define frame f
-    f=frame :main_frame, "This is frame", size: {800, 800}, react: [:close] do
+    f=frame id: :main_frame, size: {800, 800}, react: [:close] do
       box :vertical do
         box :horizontal do
           button label: "This button's label is\ntop aligned.", size: {200, 200}, label_align: :top

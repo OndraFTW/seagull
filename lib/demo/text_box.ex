@@ -3,7 +3,7 @@ defmodule Demo.TextBox do
   import Widget
 
   def start() do
-    f=frame :main_frame, "Main frame", size: {500,500}, react: [:close] do
+    f=frame id: :main_frame, size: {500,500}, react: [:close] do
       box :vertical do
         box :horizontal do
           text_box value: "Value", size: {100,100}, text_align: :left

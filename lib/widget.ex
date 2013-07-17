@@ -13,12 +13,11 @@ defmodule Widget do
     else
       idi=:_
     end
-
     quote do: Widget.Button.new id: unquote(idi), options: unquote(options)
   end
 
   defrecord Frame, id: nil, title: "", options: [], children: []
-  defmacro frame(id, title, options//[], children//[]) do
+  defmacro frame(options//[], children//[]) do
     if children==[] do
       children=Keyword.get options, :do, []
     else
@@ -32,7 +31,19 @@ defmodule Widget do
     end
     options=Keyword.delete options, :do
     children=eval_children(children)
-    quote do: Widget.Frame.new id: unquote(id), title: unquote(title), options: unquote(options), children: unquote(children)
+    if Keyword.has_key?(options, :id) do
+      idi=Keyword.get options, :id
+      options=Keyword.delete options, :id
+    else
+      idi=:_
+    end
+    if Keyword.has_key?(options, :title) do
+      titlei=Keyword.get options, :title
+      options=Keyword.delete options, :title
+    else
+      titlei=""
+    end
+    quote do: Widget.Frame.new id: unquote(idi), title: unquote(titlei), options: unquote(options), children: unquote(children)
   end
   
   defrecord Box, id: :_, orientation: nil, options: [], children: []

@@ -7,7 +7,7 @@ defmodule Demo.PID do
     pidA=spawn fn()->f(:A)end
     pidB=spawn fn()->f(:B)end
     pidC=spawn fn()->f(:C)end
-    f=frame :f, "Frame", react: [:close] do
+    f=frame id: :f, react: [:close] do
       box :vertical do
         box :horizontal, children_pid: pidA do
           button id: :A, label: "A", react: [:click]
