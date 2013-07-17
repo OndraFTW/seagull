@@ -13,12 +13,12 @@ defmodule Demo.TextBox do
         box :horizontal do
           text_box id: :click_text_box, value: "Click on me.", react: [:mouse_left_up]
           text_box id: :aaa_text_box, value: "A"
-          button :a_button, label: "Add a", react: [:click]
-          button :clear_button, label: "Clear", react: [:click]
+          button id: :a_button, label: "Add a", react: [:click]
+          button id: :clear_button, label: "Clear", react: [:click]
         end
         box :horizontal do
           text_box id: :count_box, size: {245, 33}, value: "You clicked on button: 0"
-          button :count_button, label: "Click me", react: [:click]
+          button id: :count_button, label: "Click me", react: [:click]
           text_box value: "This text box cant be adited.", readonly: true
         end
         box :horizontal do

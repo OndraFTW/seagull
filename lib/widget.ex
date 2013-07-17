@@ -6,8 +6,15 @@ defmodule Widget do
   def eval_children(item), do: [quote do: unquote(item)]
 
   defrecord Button, id: :_, options: []
-  defmacro button(id, options//[]) do
-    quote do: Widget.Button.new id: unquote(id), options: unquote(options)
+  defmacro button(options//[]) do
+    if Keyword.has_key?(options, :id) do
+      idi=Keyword.get options, :id
+      options=Keyword.delete options, :id
+    else
+      idi=:_
+    end
+
+    quote do: Widget.Button.new id: unquote(idi), options: unquote(options)
   end
 
   defrecord Frame, id: nil, title: "", options: [], children: []

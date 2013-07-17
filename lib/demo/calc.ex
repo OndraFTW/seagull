@@ -10,28 +10,28 @@ defmodule Demo.Calc do
       box :vertical do
         text_box id: :display, value: "0", size: {200,50}, text_align: :right, readonly: true
         box :horizontal do
-          button :_7, label: "7", size: {50,50}, react: [:click]
-          button :_8, label: "8", size: {50,50}, react: [:click]
-          button :_9, label: "9", size: {50,50}, react: [:click]
-          button :add, label: "+", size: {50,50}, react: [:click]
+          button id: :_7, label: "7", size: {50,50}, react: [:click]
+          button id: :_8, label: "8", size: {50,50}, react: [:click]
+          button id: :_9, label: "9", size: {50,50}, react: [:click]
+          button id: :add, label: "+", size: {50,50}, react: [:click]
         end
         box :horizontal do
-          button :_4, label: "4", size: {50,50}, react: [:click]
-          button :_5, label: "5", size: {50,50}, react: [:click]
-          button :_6, label: "6", size: {50,50}, react: [:click]
-          button :sub, label: "-", size: {50,50}, react: [:click]
+          button id: :_4, label: "4", size: {50,50}, react: [:click]
+          button id: :_5, label: "5", size: {50,50}, react: [:click]
+          button id: :_6, label: "6", size: {50,50}, react: [:click]
+          button id: :sub, label: "-", size: {50,50}, react: [:click]
         end
         box :horizontal do
-          button :_1, label: "1", size: {50,50}, react: [:click]
-          button :_2, label: "2", size: {50,50}, react: [:click]
-          button :_3, label: "3", size: {50,50}, react: [:click]
-          button :mul, label: "*", size: {50,50}, react: [:click]
+          button id: :_1, label: "1", size: {50,50}, react: [:click]
+          button id: :_2, label: "2", size: {50,50}, react: [:click]
+          button id: :_3, label: "3", size: {50,50}, react: [:click]
+          button id: :mul, label: "*", size: {50,50}, react: [:click]
         end
         box :horizontal do
-          button :clr, label: "Clr", size: {50,50}, react: [:click]
-          button :_0, label: "0", size: {50,50}, react: [:click]
-          button :eq, label: "=", size: {50,50}, react: [:click]
-          button :div, label: "/", size: {50,50}, react: [:click]
+          button id: :clr, label: "Clr", size: {50,50}, react: [:click]
+          button id: :_0, label: "0", size: {50,50}, react: [:click]
+          button id: :eq, label: "=", size: {50,50}, react: [:click]
+          button id: :div, label: "/", size: {50,50}, react: [:click]
         end
       end
     end

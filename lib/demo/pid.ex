@@ -10,12 +10,12 @@ defmodule Demo.PID do
     f=frame :f, "Frame", react: [:close] do
       box :vertical do
         box :horizontal, children_pid: pidA do
-          button :A, label: "A", react: [:click]
-          button :B, label: "B", pid: pidB, react: [:click]
+          button id: :A, label: "A", react: [:click]
+          button id: :B, label: "B", pid: pidB, react: [:click]
         end
         box :horizontal do
-          button :C, label: "C", pid: pidC, react: [:click]
-          button :D, label: "D", react: [:click]
+          button id: :C, label: "C", pid: pidC, react: [:click]
+          button id: :D, label: "D", react: [:click]
         end
       end
     end

@@ -6,14 +6,14 @@ defmodule Demo.Mouse do
     f=frame :main_frame, "This is frame", size: {700,200}, react: [:close] do
       box :vertical do
         box :horizontal do
-          button :up_down_button, label: "This button reacts\non mouse down and up clicks.", react: [:mouse_left_down, :mouse_right_down,
+          button id: :up_down_button, label: "This button reacts\non mouse down and up clicks.", react: [:mouse_left_down, :mouse_right_down,
             :mouse_middle_down, :mouse_left_up, :mouse_right_up, :mouse_middle_up]
-          button :enter_leave_button, label: "This button reacts\non mouse entering\nand leaving it.", react: [:mouse_enter, :mouse_leave]
-          button :move_button, label: "This button reacts\non mouse moving\nover it", react: [:mouse_move]
+          button id: :enter_leave_button, label: "This button reacts\non mouse entering\nand leaving it.", react: [:mouse_enter, :mouse_leave]
+          button id: :move_button, label: "This button reacts\non mouse moving\nover it", react: [:mouse_move]
         end
         box :horizontal do
-          button :wheel_button, label: "This button reacts\non mouse wheel.", react:  [:mouse_wheel]
-          button :double_click_button, label: "This button reacts\non mouse double clicks", react: [:mouse_left_double_click,
+          button id: :wheel_button, label: "This button reacts\non mouse wheel.", react:  [:mouse_wheel]
+          button id: :double_click_button, label: "This button reacts\non mouse double clicks", react: [:mouse_left_double_click,
             :mouse_right_double_click, :mouse_middle_double_click]
         end
       end

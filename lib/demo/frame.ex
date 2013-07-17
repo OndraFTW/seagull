@@ -5,12 +5,12 @@ defmodule Demo.Frame do
   def start() do
     f=frame :frame, "A", react: [:close, :create, :maximize, :minimize] do
       box :horizontal do
-        button :title_button, label: "Add 'a' to the title", react: [:click]
-        button :maximize_button, label: "Maximize", react: [:click]
-        button :minimize_button, label: "Minimize", react: [:click]
-        button :show_fullscreen_button, label: "Show fullscreen", react: [:click]
-        button :close_fullscreen_button, label: "Close fullscreen", react: [:click]
-        button :status_button, label: "Status", react: [:click]
+        button id: :title_button, label: "Add 'a' to the title", react: [:click]
+        button id: :maximize_button, label: "Maximize", react: [:click]
+        button id: :minimize_button, label: "Minimize", react: [:click]
+        button id: :show_fullscreen_button, label: "Show fullscreen", react: [:click]
+        button id: :close_fullscreen_button, label: "Close fullscreen", react: [:click]
+        button id: :status_button, label: "Status", react: [:click]
       end
     end
     pid=WindowProcess.spawn f
