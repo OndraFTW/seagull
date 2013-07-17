@@ -5,12 +5,12 @@ defmodule Compiler do
   require Constant
   require Bitwise
 
-  def compile(Widget.Frame[id: id, title: title, options: options, children: children], pid//self) do
-    Compiler.Frame.compile id, title, options, children, wxparent: :wx.null, pid: pid, parent: nil
+  def compile(Widget.Frame[id: id, options: options, children: children], pid//self) do
+    Compiler.Frame.compile id, options, children, wxparent: :wx.null, pid: pid, parent: nil
   end
 
-  def compile_child(Widget.Frame[id: id, title: title, options: options, children: children], data) do
-    Compiler.Frame.compile id, title, options, children, data
+  def compile_child(Widget.Frame[id: id, options: options, children: children], data) do
+    Compiler.Frame.compile id, options, children, data
   end
 
   def compile_child(Widget.Button[id: id, options: options], data) do

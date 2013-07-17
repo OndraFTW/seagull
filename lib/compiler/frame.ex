@@ -1,8 +1,12 @@
 defmodule Compiler.Frame do
   import Constant
 
-  def compile(id, title, options, children, data) do
-    if is_binary(title), do: title=binary_to_list title
+  def compile(id, options, children, data) do
+    title=''
+    if Keyword.has_key?(options, :title) do
+      title=binary_to_list Keyword.get(options, :title)
+      options=Keyword.delete options, :title
+    end
     if id==:_, do: id=Compiler.random_id
     {pre, post}=divide_options options
     pre=Compiler.fuse_styles pre

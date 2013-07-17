@@ -16,7 +16,7 @@ defmodule Widget do
     quote do: Widget.Button.new id: unquote(idi), options: unquote(options)
   end
 
-  defrecord Frame, id: nil, title: "", options: [], children: []
+  defrecord Frame, id: :_, options: [], children: []
   defmacro frame(options//[], children//[]) do
     if children==[] do
       children=Keyword.get options, :do, []
@@ -37,13 +37,7 @@ defmodule Widget do
     else
       idi=:_
     end
-    if Keyword.has_key?(options, :title) do
-      titlei=Keyword.get options, :title
-      options=Keyword.delete options, :title
-    else
-      titlei=""
-    end
-    quote do: Widget.Frame.new id: unquote(idi), title: unquote(titlei), options: unquote(options), children: unquote(children)
+    quote do: Widget.Frame.new id: unquote(idi), options: unquote(options), children: unquote(children)
   end
   
   defrecord Box, id: :_, orientation: nil, options: [], children: []
