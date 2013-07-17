@@ -40,6 +40,7 @@ defmodule Demo.Button do
         box :horizontal do
           button id: :button, label: "This button\ndoesn't do anything."
           button id: :activation_button, label: "This button activate\nbutton on the left.", react: [:click]
+          button id: :deactivation_button, label: "This button deactivate\nbutton on the left.", react: [:click]
         end
       end
     end
@@ -81,6 +82,11 @@ defmodule Demo.Button do
           :click->
             send pid, :button, :react, :click
             send pid, :button, :set_label, "This button\nreacts on clicks."
+        end
+         from widget: :deactivation_button do 
+          :click->
+            send pid, :button, :dont_react, :click
+            send pid, :button, :set_label, "This button\ndont reacts on clicks."
         end
         from widget: :button, do: (:click->IO.puts "You clicked on activated button.")
       end

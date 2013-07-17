@@ -28,6 +28,23 @@ defmodule Event do
     end
   end
 
+  def dont_react(_data, []), do: true
+  def dont_react(data, [head|tail]) do
+    dont_react data, head
+    dont_react data, tail
+  end
+  def dont_react(data, event) do
+    if not dont_react(Keyword.get(data, :type), data, event) do
+      raise {:uknown_event, event}
+    end
+  end
+
+  lc {widget, event_groups} inlist @event_groups do
+    def dont_react(unquote(widget), data, event) do
+      Enum.any?(unquote(event_groups), fn(group)-> group.dont_react(data, event) end)
+    end
+  end
+
   lc {widget, event_groups} inlist @event_groups do
     def translate(wxid, wxobject, {unquote(widget), id}, event, window) do
       if not Enum.any?(unquote(event_groups), fn(group)-> group.translate(wxid, wxobject, id, event, window) end) do

@@ -26,8 +26,15 @@ defmodule Event.Mouse do
       true
     end
   end
-
   def react(_data, _event), do: false
+
+  lc {sg, wx} inlist @events do
+    def dont_react(data, unquote(sg)) do
+      :wxEvtHandler.disconnect Keyword.get(data, :wxobject), unquote(wx)
+      true
+    end
+  end
+  def dont_react(_data, _event), do: false
 
   lc {sg, wx} inlist Keyword.delete(@events, :mouse_wheel) do
     def translate(_wxid, _wxobject, id, {_, unquote(wx), x, y, _, _, _, _, _, _, _, _, _, _}, window) do
