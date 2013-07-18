@@ -32,50 +32,53 @@ defmodule Widget do
     {idi, options}
   end
 
+ @widgets [
+    {:button,    Widget.Button,   0, false},
+    {:frame,     Widget.Frame,    0, true},
+    {:box,       Widget.Box,      1, true},
+    {:text_box,  Widget.TextBox,  0, false},
+    {:menu_bar,  Widget.MenuBar,  0, true},
+    {:menu,      Widget.Menu,     1, true},
+    {:menu_item, Widget.MenuItem, 1, false}
+  ]
+
   defrecord Button, id: :_, options: []
-  defmacro button(options//[]) do
-    {idi, options}=do_id_options options
-    quote do: Widget.Button.new id: unquote(idi), options: unquote(options)
-  end
-
   defrecord Frame, id: :_, options: [], children: []
-  defmacro frame(options//[], children//[]) do
-    {options, children}=do_options_children options, children
-    {idi, options}=do_id_options options
-    quote do: Widget.Frame.new id: unquote(idi), options: unquote(options), children: unquote(children)
-  end
-  
   defrecord Box, id: :_, orientation: nil, options: [], children: []
-  defmacro box(orientation, options//[], children//[]) do
-    {options, children}=do_options_children options, children
-    {idi, options}=do_id_options options
-    quote do: Widget.Box.new id: unquote(idi), orientation: unquote(orientation), options: unquote(options), children: unquote(children)
-  end
-
   defrecord TextBox, id: :_, options: []
-  defmacro text_box(options//[]) do
-    {idi, options}=do_id_options options
-    quote do: Widget.TextBox.new id: unquote(idi), options: unquote(options)
-  end
-
   defrecord MenuBar, id: :_, options: [], children: []
-  defmacro menu_bar(options//[], children//[]) do
-    {options, children}=do_options_children options, children
-    {idi, options}=do_id_options options
-    quote do: Widget.MenuBar.new id: unquote(idi), options: unquote(options), children: unquote(children)
-  end
-
   defrecord Menu, id: :_, title: "", options: [], children: []
-  defmacro menu(title, options//[], children//[]) do
-    {options, children}=do_options_children options, children
-    {idi, options}=do_id_options options
-    quote do: Widget.Menu.new id: unquote(idi), title: unquote(title), options: unquote(options), children: unquote(children)
-  end
-
   defrecord MenuItem, id: :_, title: "", options: []
-  defmacro menu_item(title, options//[]) do
-    {idi, options}=do_id_options options
-    quote do: Widget.MenuItem.new id: unquote(idi), title: unquote(title), options: unquote(options)
+
+  lc {widget, module, compulsory, has_children} inlist @widgets do
+    case {compulsory, has_children} do
+      {0, false}->
+        defmacro unquote(widget)(options//[]) do
+          modulei=unquote(module)
+          {idi, options}=do_id_options options
+          quote do: {unquote(modulei), unquote(idi), unquote(options)}
+        end
+      {0, true}->
+        defmacro unquote(widget)(options//[], children//[]) do
+          modulei=unquote(module)
+          {options, children}=do_options_children options, children
+          {idi, options}=do_id_options options
+          quote do: {unquote(modulei), unquote(idi), unquote(options), unquote(children)}
+        end
+      {1, false}->
+        defmacro unquote(widget)(a, options//[]) do
+          modulei=unquote(module)
+          {idi, options}=do_id_options options
+          quote do: {unquote(modulei), unquote(idi), unquote(a), unquote(options)}
+        end
+      {1, true}->
+        defmacro unquote(widget)(a, options//[], children//[]) do
+          modulei=unquote(module)
+          {options, children}=do_options_children options, children
+          {idi, options}=do_id_options options
+          quote do: {unquote(modulei), unquote(idi), unquote(a), unquote(options), unquote(children)}
+        end
+    end
   end
 
 end
