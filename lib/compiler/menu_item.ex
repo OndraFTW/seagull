@@ -1,17 +1,16 @@
 defmodule Compiler.MenuItem do
+  require Constant
 
   def compile(id, title, options, data) do
     if id==:_, do: id=Compiler.random_id
-    {pre, post}=divide_options options
-    pre=[{:parentMenu, Keyword.get(data, :wxparent)}, {:text, binary_to_list(title)}|pre]
-    pre=Compiler.fuse_styles pre
+    {_pre, post}=divide_options options
+    #pre=[{:parentMenu, Keyword.get(data, :wxparent)}, {:text, binary_to_list(title)}|pre]
+    #pre=Compiler.fuse_styles pre
     pid=Keyword.get data, :pid
     data=Keyword.delete data, :pid
     my_pid=Keyword.get options, :pid, pid
-    wxitem = :wxMenuItem.new pre
-    {:wx_ref, wxitem_id, :wxMenuItem, _}=wxitem
-    :wxMenu.append Keyword.get(data, :wxparent), wxitem_id, binary_to_list(title)
-    data=[type: :menu_item, wxobject: wxitem, id: id, pid: my_pid]++data
+    :wxMenu.append Keyword.get(data, :wxparent), Constant.wxID_ANY, binary_to_list(title), []
+    data=[type: :menu_item, id: id, pid: my_pid]++data
     compile_options(data, post)
     [{id, data}]
   end
