@@ -9,8 +9,8 @@ Simple GUI library for Elixir language based on wxErlang.
     defmodule A do
       import Widget
       def start() do
-        f=frame :main_frame, "Frame title" do
-          button :button
+        f=frame id: :main_frame, title: "Frame title" do
+          button id: :button
         end
         WindowProcess.spawn f
       end
@@ -21,10 +21,10 @@ Simple GUI library for Elixir language based on wxErlang.
     defmodule B do
       import Widget
       def start() do
-        f=frame :main_frame, "Frame title" do
+        f=frame id: :main_frame do
           box :vertical do
-            button :button1, label: "First Button"
-            button :button2, label: "Second Button"
+            button id: :button1, label: "First Button"
+            button id: :button2, label: "Second Button"
           end
         end
         WindowProcess.spawn f
@@ -39,8 +39,8 @@ Simple GUI library for Elixir language based on wxErlang.
       import Widget
       
       def start() do
-        f=frame :main_frame, "Frame", react: [:close] do
-          button :button, label: "Number of clicks: 0.", react: [:click]
+        f=frame id: :main_frame, react: [:close] do
+          button id: :button, label: "Number of clicks: 0.", react: [:click]
         end
         pid=WindowProcess.spawn f
         reaction pid
