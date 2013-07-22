@@ -37,7 +37,7 @@ defmodule Seagull do
     pid |> pid_to_list |> list_to_binary
   end
 
-  #macro reaction
+  #macro receive_event
 
   defmacro receive_event(block) do
     {:receive, [], [[do: {:"->", [], Enum.reverse(define_lines(block))}]]}
@@ -51,6 +51,9 @@ defmodule Seagull do
   end
 
   defp define_line({:from, _, [[pid: pid, widget: widget], [do: {:"->", _, list}]]}, acc) do
+        add_pid_and_widget(list, [pid: pid, widget: widget])++acc
+  end
+  defp define_line({:from, _, [[pid: pid, widget: widget, do: {:"->", _, list}]]}, acc) do
         add_pid_and_widget(list, [pid: pid, widget: widget])++acc
   end
   defp define_line({:from, _, [[pid: pid], [do: {:from, _, [[widget: widget], [do: {:"->", _, list}]]}]]}, acc) do
