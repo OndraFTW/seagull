@@ -1,7 +1,7 @@
 defmodule Compiler.Frame do
   import Constant
 
-  def compile(id, options, children, data) do
+  def compile({id}, options, children, data) do
     title=''
     if Keyword.has_key?(options, :title) do
       title=binary_to_list Keyword.get(options, :title)

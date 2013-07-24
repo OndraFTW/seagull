@@ -2,7 +2,7 @@ defmodule Compiler.TextBox do
   
   require Constant
 
-  def compile(id, options, data) do
+  def compile({id}, options, [], data) do
     if id==:_, do: id=Compiler.random_id
     {pre, post}=divide_options options
     pre=Compiler.fuse_styles [{:style, 1024}|pre]

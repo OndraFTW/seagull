@@ -3,7 +3,7 @@ defmodule Compiler.Button do
   require Constant
   require Bitwise
 
-  def compile(id, options, data) do
+  def compile({id}, options, [], data) do
     if id==:_, do: id=Compiler.random_id
     {pre, post}=divide_options options
     pre=Compiler.fuse_styles pre

@@ -1,7 +1,7 @@
 defmodule Compiler.MenuBar do
   require Constant
 
-  def compile(id, options, children, data) do
+  def compile({id}, options, children, data) do
     if id==:_, do: id=Compiler.random_id
     {_pre, post}=divide_options options
     wxitem = :wxMenuBar.new

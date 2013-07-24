@@ -1,7 +1,7 @@
 defmodule Compiler.Box do
   require Constant
 
-  def compile(id, orientation, options, children, data) do
+  def compile({id, orientation}, options, children, data) do
     o=case orientation do
       :vertical->Constant.wxVERTICAL
       :horizontal->Constant.wxHORIZONTAL

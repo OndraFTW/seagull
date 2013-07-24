@@ -1,7 +1,7 @@
 defmodule Compiler.MenuItem do
   require Constant
 
-  def compile(id, title, options, data) do
+  def compile({id, title}, options, [], data) do
     if id==:_, do: id=Compiler.random_id
     {_pre, post}=divide_options options
     #pre=[{:parentMenu, Keyword.get(data, :wxparent)}, {:text, binary_to_list(title)}|pre]
