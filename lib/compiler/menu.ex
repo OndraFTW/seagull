@@ -5,7 +5,14 @@ defmodule Compiler.Menu do
     if id==:_, do: id=Compiler.random_id
     {pre, post}=divide_options options
     wxitem = :wxMenu.new pre
-    :wxMenuBar.append Keyword.get(data, :wxparent), wxitem, binary_to_list(title)
+    wxparent=Keyword.get(data, :wxparent)
+    {:wx_ref, _, wxtype, _}=wxparent
+    if wxtype == :wxMenuBar do
+      :wxMenuBar.append wxparent, wxitem, binary_to_list(title)
+    else
+      item = :wxMenu.append wxparent, Constant.wxID_ANY, binary_to_list(title), wxitem
+      data=[{:menu_item, item}|data]
+    end
     pid=Keyword.get data, :pid
     data=Keyword.delete data, :pid
     children_pid=Keyword.get options, :children_pid, pid

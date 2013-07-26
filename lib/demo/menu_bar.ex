@@ -9,6 +9,10 @@ defmodule Demo.MenuBar do
         menu_item "Second"
         menu_item "Third"
         menu_item "Fourth"
+        menu "Submenu" do
+          menu_item "Fifth"
+          menu_item "Sixth"
+        end
       end
     end
 
