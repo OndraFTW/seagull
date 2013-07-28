@@ -4,14 +4,14 @@ defmodule Demo.MenuBar do
 
   def start() do
     mb=menu_bar do
-      menu "File", id: :file_menu, react: [:open, :close, :highlight, :select] do
-        menu_item "First"
-        menu_item "Second"
-        menu_item "Third"
-        menu_item "Fourth"
-        menu "Submenu" do
-          menu_item "Fifth"
-          menu_item "Sixth"
+      menu "File", id: :file_menu, react: [:open, :close, :select, :highlight] do
+        menu_item "First", id: :first_item
+        menu_item "Second", id: :second_item
+        menu_item "Third", id: :third_item
+        menu_item "Fourth", id: :fourth_item
+        menu "Submenu", id: :submenu, react: [:open, :close, :select, :highlight] do
+          menu_item "Fifth", id: :fifth_item
+          menu_item "Sixth", id: :sixth_item
         end
       end
     end
@@ -36,8 +36,14 @@ defmodule Demo.MenuBar do
         from widget: :file_menu do
           :open->IO.puts "Menu File opened."
           :close->IO.puts "Menu File closed."
-          :highlight->IO.puts "Menu highlight."
+          :highlight, id->IO.puts "Menu highlight: #{id}."
           :select->IO.puts "Menu select."
+        end
+        from widget: :submenu do
+          :open->IO.puts "Submenu opened."
+          :close->IO.puts "Submenu closed."
+          :highlight, id->IO.puts "Submenu highlight: #{id}."
+          :select->IO.puts "Submenu select."
         end
       end
     end

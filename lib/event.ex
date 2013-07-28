@@ -53,12 +53,12 @@ defmodule Event do
     end
   end
 
-  def get_widget_by_wx_ref(ref, []) do
-    raise {:widget_not_found, ref}
+  def get_widget_by_wx_ref([], _ref) do
+    nil
   end
-  def get_widget_by_wx_ref(ref, [{_id, widget}|tail]) do
+  def get_widget_by_wx_ref([{_id, widget}|tail], ref) do
     {:wx_ref, wx_ref, _, _}=Keyword.get widget, :wxobject
-    if wx_ref==ref, do: widget, else: get_widget_by_wx_ref(ref, tail)
+    if wx_ref==ref, do: widget, else: get_widget_by_wx_ref(tail, ref)
   end
 
 end

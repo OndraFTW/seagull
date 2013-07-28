@@ -5,21 +5,23 @@ defmodule Compiler.Menu do
     if id==:_, do: id=Compiler.random_id
     {pre, post}=divide_options options
     wxitem = :wxMenu.new pre
-    wxparent=Keyword.get(data, :wxparent)
-    {:wx_ref, _, wxtype, _}=wxparent
-    if wxtype == :wxMenuBar do
-      :wxMenuBar.append wxparent, wxitem, binary_to_list(title)
-    else
-      item = :wxMenu.append wxparent, Constant.wxID_ANY, binary_to_list(title), wxitem
-      data=[{:menu_item, item}|data]
-    end
+    wxparent=Keyword.get(data, :wxparent) 
     pid=Keyword.get data, :pid
     data=Keyword.delete data, :pid
     children_pid=Keyword.get options, :children_pid, pid
     my_pid=Keyword.get options, :pid, pid
-    data=[type: :menu, wxobject: wxitem, id: id, pid: my_pid]++data
+    data=[{:type, :menu}, {:wxobject, wxitem}, {:id, id}, {:pid, my_pid}|data]
     compile_options(data, post)
     children=Compiler.compile_children children, [wxparent: wxitem, parent: id, pid: children_pid], []
+    {:wx_ref, _, wxtype, _}=wxparent
+    if wxtype == :wxMenuBar do
+      :wxMenuBar.append wxparent, wxitem, binary_to_list(title)
+    else
+      supermenu_item = :wxMenuItem.new []
+      {:wx_ref, wxitem_id, :wxMenuItem, _}=supermenu_item
+      :wxMenu.append wxparent, wxitem_id, binary_to_list(title), wxitem, []
+      data=[{:supermenu_item, supermenu_item}|data]
+    end
     [{id, data}|children]
   end
 
