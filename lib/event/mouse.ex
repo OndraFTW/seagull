@@ -47,7 +47,7 @@ defmodule Event.Mouse do
   def translate(_wxid, _wxobject, id, {_, :mousewheel, x, y, _, _, _, _, _, _, _, delta, _, _}, window) do
     widget=Keyword.get window, id
     pid=Keyword.get widget, :pid
-    pid<-[self, id, :mouse_wheel, {x, y}, if delta>0, do: :up, else: :down]
+    pid<-[self, id, :mouse_wheel, {x, y}, if(delta>0, do: :up, else: :down)]
     true
   end
   def translate(_wxid, _wxobject, _id, _event, _window) do

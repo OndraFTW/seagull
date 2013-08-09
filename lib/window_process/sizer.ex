@@ -15,6 +15,6 @@ defmodule WindowProcess.Sizer do
     {:response_window, :ok, [{id, compiled_item}|grandchildren]++Keyword.get(object, :window)}
   end
   def respond(object, func, options),
-    do: WindowProcess.Object.respond object, func, options
+    do: WindowProcess.Object.respond(object, func, options)
 
 end

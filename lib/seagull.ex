@@ -84,8 +84,8 @@ defmodule Seagull do
 
   defp add_pid_and_widget(list, data), do: add_pid_and_widget(list, data, [])
   defp add_pid_and_widget([], _data, result), do: result
-  defp add_pid_and_widget([{pre, post}|tail], data, result) do
-    add_pid_and_widget tail, data, [{[[Keyword.get(data, :pid), Keyword.get(data, :widget)|pre]], post}|result]
+  defp add_pid_and_widget([{pre, metadata, post}|tail], data, result) do
+    add_pid_and_widget tail, data, [{[[Keyword.get(data, :pid), Keyword.get(data, :widget)|pre]], metadata, post}|result]
   end
 
 end

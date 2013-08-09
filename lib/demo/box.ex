@@ -31,14 +31,18 @@ defmodule Demo.Box do
     continue=true
     receive_event do
       from pid: ^pid do
-        from widget: :main_frame, do: (:close->pid<-:destroy; continue=false)
-        from widget: :prepend_button, do: (:click->send pid, :hbox, :prepend, button(label: "P"))
-        from widget: :append_button,  do: (:click->send pid, :hbox, :append, button(label: "A"))
-        from widget: :prepend_line_button, do: (:click->send pid, :vbox, :prepend, box(:horizontal, do: button(label: "PL")))
-        from widget: :append_line_button,  do: (:click->send pid, :vbox, :append, box(:horizontal, do: button(label: "AL")))
+        from widget: :main_frame do
+          :close->
+            pid<-:destroy
+            continue=false
+        end
+        from widget: :prepend_button, do: (:click->send(pid, :hbox, :prepend, button(label: "P")))
+        from widget: :append_button,  do: (:click->send(pid, :hbox, :append, button(label: "A")))
+        from widget: :prepend_line_button, do: (:click->send(pid, :vbox, :prepend, box(:horizontal, do: button(label: "PL"))))
+        from widget: :append_line_button,  do: (:click->send(pid, :vbox, :append, box(:horizontal, do: button(label: "AL"))))
       end
     end
-    if continue, do: reaction pid
+    if continue, do: reaction(pid)
   end
 
 end

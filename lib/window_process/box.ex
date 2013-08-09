@@ -9,6 +9,6 @@ defmodule WindowProcess.Box do
     end
   end
   def respond(object, func, options),
-    do: WindowProcess.Sizer.respond object, func, options
+    do: WindowProcess.Sizer.respond(object, func, options)
 
 end

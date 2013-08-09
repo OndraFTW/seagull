@@ -25,11 +25,11 @@ defmodule Compiler.Menu do
     [{id, data}|children]
   end
 
-  defp divide_options(options), do: divide_options options,  [], []
+  defp divide_options(options), do: divide_options(options,  [], [])
   defp divide_options([], pre, post), do: {pre, post}
-  defp divide_options([{:pid, _}|tail], pre, post), do: divide_options tail, pre, post
-  defp divide_options([{:children_pid, _}|tail], pre, post), do: divide_options tail, pre, post
-  defp divide_options([{:react, events}|tail], pre, post), do: divide_options tail, pre, [{:react, events}|post]
+  defp divide_options([{:pid, _}|tail], pre, post), do: divide_options(tail, pre, post)
+  defp divide_options([{:children_pid, _}|tail], pre, post), do: divide_options(tail, pre, post)
+  defp divide_options([{:react, events}|tail], pre, post), do: divide_options(tail, pre, [{:react, events}|post])
   
   defp compile_options(_data, []), do: nil
   defp compile_options(data, [head|tail]) do
@@ -37,7 +37,7 @@ defmodule Compiler.Menu do
     compile_options data, tail
   end
 
-  defp compile_option(data, {:react, events}), do: Event.react data, events
+  defp compile_option(data, {:react, events}), do: Event.react(data, events)
   defp compile_option(_data, option), do: raise {:uknown_option, option}
 
 end

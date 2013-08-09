@@ -16,10 +16,10 @@ defmodule Compiler.MenuBar do
     [{id, data}|children]
   end
 
-  defp divide_options(options), do: divide_options options,  [], []
+  defp divide_options(options), do: divide_options(options,  [], [])
   defp divide_options([], pre, post), do: {pre, post}
-  defp divide_options([{:pid, _}|tail], pre, post), do: divide_options tail, pre, post
-  defp divide_options([{:children_pid, _}|tail], pre, post), do: divide_options tail, pre, post
+  defp divide_options([{:pid, _}|tail], pre, post), do: divide_options(tail, pre, post)
+  defp divide_options([{:children_pid, _}|tail], pre, post), do: divide_options(tail, pre, post)
   
   def compile_options(_data, []), do: nil
 

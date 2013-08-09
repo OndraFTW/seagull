@@ -62,7 +62,7 @@ defmodule Demo.Calc do
                 :add->acc+value
                 :sub->acc-value
                 :mul->acc*value
-                :div->if value==0, do: 0, else: div acc, value
+                :div->if value==0, do: 0, else: div(acc, value)
               end
               if w == :eq do
                 send pid, :display, :set_value, integer_to_binary(acc)
@@ -79,7 +79,7 @@ defmodule Demo.Calc do
         end
       end
     end
-    if continue, do: reaction pid, acc, op
+    if continue, do: reaction(pid, acc, op)
   end
 
   def concat_numbers("0", b), do: b

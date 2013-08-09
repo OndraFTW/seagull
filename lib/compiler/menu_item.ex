@@ -15,9 +15,9 @@ defmodule Compiler.MenuItem do
     [{id, data}]
   end
 
-  defp divide_options(options), do: divide_options options, [], []
+  defp divide_options(options), do: divide_options(options, [], [])
   defp divide_options([], pre, post), do: {pre, post}
-  defp divide_options([{:pid, _}|tail], pre, post), do: divide_options tail, pre, post
+  defp divide_options([{:pid, _}|tail], pre, post), do: divide_options(tail, pre, post)
   
   defp compile_options(_data, []), do: true
   defp compile_options(data, [head|tail]) do

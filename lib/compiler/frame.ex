@@ -45,14 +45,14 @@ defmodule Compiler.Frame do
     end
   end
 
-  defp divide_options(options), do: divide_options options, [], []
+  defp divide_options(options), do: divide_options(options, [], [])
   defp divide_options([], pre, post), do: {pre, post}
-  defp divide_options([{:position, {x, y}}|tail], pre, post), do: divide_options tail, [{:pos, {x, y}}|pre], post
-  defp divide_options([{:size, {w, h}}|tail], pre, post), do: divide_options tail, [{:size, {w, h}}|pre], post
-  defp divide_options([{:react, events}|tail], pre, post), do: divide_options tail, pre, [{:react, events}|post]
-  defp divide_options([{:pid, _}|tail], pre, post), do: divide_options tail, pre, post
-  defp divide_options([{:children_pid, _}|tail], pre, post), do: divide_options tail, pre, post
-  defp divide_options([{:menu_bar, _}|tail], pre, post), do: divide_options tail, pre, post
+  defp divide_options([{:position, {x, y}}|tail], pre, post), do: divide_options(tail, [{:pos, {x, y}}|pre], post)
+  defp divide_options([{:size, {w, h}}|tail], pre, post), do: divide_options(tail, [{:size, {w, h}}|pre], post)
+  defp divide_options([{:react, events}|tail], pre, post), do: divide_options(tail, pre, [{:react, events}|post])
+  defp divide_options([{:pid, _}|tail], pre, post), do: divide_options(tail, pre, post)
+  defp divide_options([{:children_pid, _}|tail], pre, post), do: divide_options(tail, pre, post)
+  defp divide_options([{:menu_bar, _}|tail], pre, post), do: divide_options(tail, pre, post)
   defp divide_options([{:border, border}|tail], pre, post) do
     o=case border do
       :default->wxBORDER_DEFAULT
@@ -74,7 +74,7 @@ defmodule Compiler.Frame do
     compile_options data, tail
   end
 
-  defp compile_option(data, {:react, events}), do: Event.react data, events
+  defp compile_option(data, {:react, events}), do: Event.react(data, events)
   defp compile_option(_data, option), do: raise {:uknown_option, option}
 
 end
