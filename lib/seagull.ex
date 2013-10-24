@@ -34,7 +34,7 @@ defmodule Seagull do
   end
 
   def pid_to_binary(pid) do
-    pid |> pid_to_list |> list_to_binary
+    pid |> :erlang.pid_to_list |> to_string
   end
 
   #macro receive_event
@@ -44,7 +44,7 @@ defmodule Seagull do
   end
 
   defp define_lines([do: {:__block__, _, block}]) do
-    Enum.reduce block, [], define_line(&1, &2)
+    Enum.reduce block, [], &(define_line(&1, &2))
   end
   defp define_lines([do: insides]) do
     define_line insides, []

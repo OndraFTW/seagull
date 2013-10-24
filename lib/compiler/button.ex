@@ -1,5 +1,5 @@
 defmodule Compiler.Button do
-  
+
   require Constant
   require Bitwise
 
@@ -20,7 +20,7 @@ defmodule Compiler.Button do
   defp divide_options(options), do: divide_options(options, [], [])
   defp divide_options([], pre, post), do: {pre, post}
   defp divide_options([{:label, label}|tail], pre, post) when is_list(label), do: divide_options(tail, [{:label, label}|pre], post)
-  defp divide_options([{:label, label}|tail], pre, post), do: divide_options(tail, [{:label, binary_to_list(label)}|pre], post)
+  defp divide_options([{:label, label}|tail], pre, post), do: divide_options(tail, [{:label, to_char_list(label)}|pre], post)
   defp divide_options([{:disabled, value}|tail], pre, post), do: if(value, do: divide_options(tail, pre, [:disabled|post]), else: divide_options(tail, pre, post))
   defp divide_options([{:default, value}|tail], pre, post), do: if(value, do: divide_options(tail, pre, [:default|post]), else: divide_options(tail, pre, post))
   defp divide_options([{:position, {w, h}}|tail], pre, post), do: divide_options(tail, [{:pos, {w, h}}|pre], post)
@@ -43,7 +43,7 @@ defmodule Compiler.Button do
     end
     divide_options tail, [{:style, s}|pre], post
   end
-  
+
   defp compile_options(_data, []), do: true
   defp compile_options(data, [head|tail]) do
     compile_option data, head

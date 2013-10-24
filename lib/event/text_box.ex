@@ -29,7 +29,7 @@ defmodule Event.TextBox do
     def translate(_wxid, _wxobject, id, {_, unquote(wx), value, _, _}, window) do
       widget=Keyword.get window, id
       pid=Keyword.get widget, :pid
-      pid<-[self, id, unquote(sg), list_to_binary(value)]
+      pid<-[self, id, unquote(sg), to_string(value)]
       true
     end
   end

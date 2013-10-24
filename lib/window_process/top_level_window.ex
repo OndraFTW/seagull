@@ -1,7 +1,7 @@
 defmodule WindowProcess.TopLevelWindow do
 
-  def respond(object, :get_title, []), do: list_to_binary(:wxTopLevelWindow.getTitle(Keyword.get(object, :wxobject)))
-  def respond(object, :set_title, title), do: :wxTopLevelWindow.setTitle(Keyword.get(object, :wxobject), binary_to_list(title))
+  def respond(object, :get_title, []), do: to_string(:wxTopLevelWindow.getTitle(Keyword.get(object, :wxobject)))
+  def respond(object, :set_title, title), do: :wxTopLevelWindow.setTitle(Keyword.get(object, :wxobject), to_char_list(title))
   def respond(object, :maximize, []), do: :wxTopLevelWindow.maximize(Keyword.get(object, :wxobject))
   def respond(object, :is_maximized, []), do: :wxTopLevelWindow.isMaximized(Keyword.get(object, :wxobject))
   def respond(object, :minimize, []), do: :wxTopLevelWindow.iconize(Keyword.get(object, :wxobject))

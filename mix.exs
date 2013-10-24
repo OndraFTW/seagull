@@ -4,6 +4,7 @@ defmodule Seagull.Mixfile do
   def project do
     [ app: :seagull,
       version: "0.0.1",
+      elixir: "~> 0.10.4-dev"
       deps: deps ]
   end
 

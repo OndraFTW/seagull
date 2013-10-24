@@ -1,7 +1,7 @@
 defmodule WindowProcess.TextBox do
 
   def respond(object, :append_text, options) do
-    :wxTextCtrl.appendText Keyword.get(object, :wxobject), binary_to_list(options)
+    :wxTextCtrl.appendText Keyword.get(object, :wxobject), to_char_list(options)
   end
   def respond(object, :can_copy, []), do: :wxTextCtrl.canCopy(Keyword.get(object, :wxobject))
   def respond(object, :can_cut, []), do: :wxTextCtrl.canCut(Keyword.get(object, :wxobject))
@@ -14,8 +14,8 @@ defmodule WindowProcess.TextBox do
   def respond(object, :paste, []), do: :wxTextCtrl.paste(Keyword.get(object, :wxobject))
   def respond(object, :redo, []), do: :wxTextCtrl.redo(Keyword.get(object, :wxobject))
   def respond(object, :undo, []), do: :wxTextCtrl.undo(Keyword.get(object, :wxobject))
-  def respond(object, :get_value, []), do: list_to_binary( :wxTextCtrl.getValue(Keyword.get(object, :wxobject)))
-  def respond(object, :set_value, value), do: :wxTextCtrl.setValue(Keyword.get(object, :wxobject), binary_to_list(value))
+  def respond(object, :get_value, []), do: to_string( :wxTextCtrl.getValue(Keyword.get(object, :wxobject)))
+  def respond(object, :set_value, value), do: :wxTextCtrl.setValue(Keyword.get(object, :wxobject), to_char_list(value))
   def respond(object, func, options),
     do: WindowProcess.Control.respond(object, func, options)
 

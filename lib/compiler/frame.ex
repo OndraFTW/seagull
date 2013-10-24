@@ -4,7 +4,7 @@ defmodule Compiler.Frame do
   def compile({id}, options, children, data) do
     title=''
     if Keyword.has_key?(options, :title) do
-      title=binary_to_list Keyword.get(options, :title)
+      title=to_char_list Keyword.get(options, :title)
       options=Keyword.delete options, :title
     end
     if id==:_, do: id=Compiler.random_id
@@ -67,7 +67,7 @@ defmodule Compiler.Frame do
     end
     divide_options tail, [{:style, o}|pre], post
   end
-  
+
   defp compile_options(_data, []), do: nil
   defp compile_options(data, [head|tail]) do
     compile_option data, head

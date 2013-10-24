@@ -1,5 +1,5 @@
 defmodule Compiler.TextBox do
-  
+
   require Constant
 
   def compile({id}, options, [], data) do
@@ -18,7 +18,7 @@ defmodule Compiler.TextBox do
 
   defp divide_options(options), do: divide_options(options, [], [])
   defp divide_options([], pre, post), do: {pre, post}
-  defp divide_options([{:value, value}|tail], pre, post), do: divide_options(tail, [{:value, binary_to_list(value)}|pre], post)
+  defp divide_options([{:value, value}|tail], pre, post), do: divide_options(tail, [{:value, to_char_list(value)}|pre], post)
   defp divide_options([{:position, {x, y}}|tail], pre, post), do: divide_options(tail, [{:pos, {x, y}}|pre], post)
   defp divide_options([{:size, {w, h}}|tail], pre, post), do: divide_options(tail, [{:size, {w, h}}|pre], post)
   defp divide_options([{:multiline, value}|tail], pre, post), do: if(value, do: divide_options(tail, [{:style, Constant.wxTE_MULTILINE}|pre], post), else: divide_options(tail, pre, post))
@@ -34,7 +34,7 @@ defmodule Compiler.TextBox do
     divide_options tail, [{:style, v}|pre], post
   end
   defp divide_options([{:wrap, value}|tail], pre, post) do
-    v=case value do
+    v = case value do
       :dont->Constant.wxTE_DONTWRAP
       :character->Constant.wxTE_CHARWRAP
       :word->Constant.wxTE_WORDWRAP
@@ -42,7 +42,7 @@ defmodule Compiler.TextBox do
     end
     divide_options tail, [{:style, v}|pre], post
   end
-  
+
   defp compile_options(_data, []), do: true
   defp compile_options(data, [head|tail]) do
     compile_option data, head
