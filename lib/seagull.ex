@@ -40,7 +40,7 @@ defmodule Seagull do
   #macro receive_event
 
   defmacro receive_event(block) do
-    {:receive, [], [[do: {:"->", [], Enum.reverse(define_lines(block))}]]}
+    {:receive, [], [[do: Enum.reverse(define_lines(block))]]}
   end
 
   defp define_lines([do: {:__block__, _, block}]) do
@@ -50,42 +50,43 @@ defmodule Seagull do
     define_line insides, []
   end
 
-  defp define_line({:from, _, [[pid: pid, widget: widget], [do: {:"->", _, list}]]}, acc) do
+  defp define_line({:from, _, [[pid: pid, widget: widget], [do: list]]}, acc) do
         add_pid_and_widget(list, [pid: pid, widget: widget])++acc
   end
-  defp define_line({:from, _, [[pid: pid, widget: widget, do: {:"->", _, list}]]}, acc) do
+  defp define_line({:from, _, [[pid: pid, widget: widget, do: list]]}, acc) do
         add_pid_and_widget(list, [pid: pid, widget: widget])++acc
   end
-  defp define_line({:from, _, [[pid: pid], [do: {:from, _, [[widget: widget], [do: {:"->", _, list}]]}]]}, acc) do
+  defp define_line({:from, _, [[pid: pid], [do: {:from, _, [[widget: widget], [do: list]]}]]}, acc) do
         add_pid_and_widget(list, [pid: pid, widget: widget])++acc
   end
   defp define_line({:from, _, [[pid: pid], [do: {:__block__, _, block2}]]}, acc) do
     Enum.reduce(block2, [], fn
-      ({:from, _, [[widget: widget], [do: {:"->", _, list}]]}, acc2)->
+      ({:from, _, [[widget: widget], [do: list]]}, acc2)->
         add_pid_and_widget(list, [pid: pid, widget: widget])++acc2
-      ({:from, _, [[widget: widget, do: {:"->", _, list}]]}, acc2)->
+      ({:from, _, [[widget: widget, do: list]]}, acc2)->
         add_pid_and_widget(list, [pid: pid, widget: widget])++acc2
     end) ++ acc
   end
-  defp define_line({:from, _, [[pid: pid, do: {:from, _, [[widget: widget], [do: {:"->", _, list}]]}]]}, acc) do
+  defp define_line({:from, _, [[pid: pid, do: {:from, _, [[widget: widget], [do: list]]}]]}, acc) do
         add_pid_and_widget(list, [pid: pid, widget: widget])++acc
   end
   defp define_line({:from, _, [[pid: pid, do: {:__block__, _, block2}]]}, acc) do
     Enum.reduce(block2, [], fn
-      ({:from, _, [[widget: widget], [do: {:"->", _, list}]]}, acc2)->
+      ({:from, _, [[widget: widget], [do: list]]}, acc2)->
         add_pid_and_widget(list, [pid: pid, widget: widget])++acc2
-      ({:from, _, [[widget: widget, do: {:"->", _, list}]]}, acc2)->
+      ({:from, _, [[widget: widget, do: list]]}, acc2)->
         add_pid_and_widget(list, [pid: pid, widget: widget])++acc2
     end) ++ acc
   end
-  defp define_line({:message, _, [[do: {:"->", _, list}]]}, acc) do
+  defp define_line({:message, _, [[do: list]]}, acc) do
     list++acc
   end
 
   defp add_pid_and_widget(list, data), do: add_pid_and_widget(list, data, [])
   defp add_pid_and_widget([], _data, result), do: result
-  defp add_pid_and_widget([{pre, metadata, post}|tail], data, result) do
-    add_pid_and_widget tail, data, [{[[Keyword.get(data, :pid), Keyword.get(data, :widget)|pre]], metadata, post}|result]
+  defp add_pid_and_widget([{:"->", metadata, [conditions, block]}|tail], data, result) do
+    add_pid_and_widget tail, data, [{:"->", metadata, [[[Keyword.get(data, :pid), Keyword.get(data, :widget)|conditions]], block]}|result]
   end
 
 end
+
