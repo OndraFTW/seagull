@@ -31,7 +31,7 @@ defmodule Event.Menu do
     def translate(_wxid, _wxobject, id, {_, unquote(wx)}, window) do
       widget=Keyword.get window, id
       pid=Keyword.get widget, :pid
-      pid<-[self, id, unquote(sg)]
+      send pid, [self, id, unquote(sg)]
       true
     end
   end
@@ -44,7 +44,7 @@ defmodule Event.Menu do
       item_id=Keyword.get item, :id
       widget=Keyword.get window, id
       pid=Keyword.get widget, :pid
-      pid<-[self, id, :highlight, item_id]
+      send pid, [self, id, :highlight, item_id]
       true
     else
       true

@@ -45,7 +45,7 @@ defmodule Demo.Calc do
       from pid: ^pid do
         from widget: :main_frame do
           :close->
-            pid<-:destroy
+            send pid, :destroy
             continue=false
         end
         from widget: :clr do

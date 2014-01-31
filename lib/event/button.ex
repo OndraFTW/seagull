@@ -29,7 +29,7 @@ defmodule Event.Button do
     def translate(_wxid, _wxobject, id, {_, unquote(wx), _, _, _}, window) do
       widget=Keyword.get window, id
       pid=Keyword.get widget, :pid
-      pid<-[self, id, unquote(sg)]
+      send pid, [self, id, unquote(sg)]
       true
     end
   end

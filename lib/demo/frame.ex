@@ -23,7 +23,7 @@ defmodule Demo.Frame do
       from pid: ^pid do
         from widget: :frame do
           :close->
-            pid<-:destroy
+            send pid, :destroy
             continue=false
           :create->IO.puts "Frame was created."
           #:destroy->IO.puts "Frame was destroyed"

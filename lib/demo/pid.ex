@@ -34,8 +34,8 @@ defmodule Demo.PID do
       from pid: ^gui_pid do
         from widget: :f do
           :close->
-            gui_pid<-:destroy
-            Enum.each pids, fn(pid)-> pid<-:end end
+            send gui_pid, :destroy
+            Enum.each pids, fn(pid)-> send pid, :end end
         end
         from widget: :D do 
           :click->

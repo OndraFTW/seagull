@@ -44,7 +44,7 @@ defmodule Demo.TextBox do
       from pid: ^pid do
         from widget: :main_frame do
           :close->
-            pid<-:destroy
+            send pid, :destroy
             continue=false
         end
         from widget: :click_text_box, do: (:mouse_left_up, _->IO.puts "You clicked on text box.")
@@ -53,7 +53,7 @@ defmodule Demo.TextBox do
         from widget: :count_button do
           :click->
             text=send pid, :count_box, :get_value
-            count=Regex.run(%r/[0-9]+/, text) |> Enum.first |> binary_to_integer
+            count=Regex.run(%r/[0-9]+/, text) |> List.first |> binary_to_integer
             count=count+1
             text=Regex.replace %r/([0-9]+)/, text, integer_to_binary(count)
             send pid, :count_box, :set_value, text

@@ -30,7 +30,7 @@ defmodule Demo.Mouse do
         from widget: :main_frame do
           :close->
             IO.puts "You closed frame."
-            pid<-:destroy
+            send pid, :destroy
             continue=false
           :mouse_left_down, {x, y}->
             IO.puts "You clicked on frame on position [#{x}, #{y}]."

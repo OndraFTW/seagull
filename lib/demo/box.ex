@@ -33,7 +33,7 @@ defmodule Demo.Box do
       from pid: ^pid do
         from widget: :main_frame do
           :close->
-            pid<-:destroy
+            send pid, :destroy
             continue=false
         end
         from widget: :prepend_button, do: (:click->send(pid, :hbox, :prepend, button(label: "P")))

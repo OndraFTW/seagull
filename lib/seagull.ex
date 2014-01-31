@@ -6,7 +6,7 @@ defmodule Seagull do
 
   @doc"Sends message to GUI and returns response to this message."
   def send(pid, id, func, options//[]) do
-    pid <- {self(), id, func, options}
+    send pid, {self(), id, func, options}
     receive do
       {^pid, ^id, ^func, result}->result
     end

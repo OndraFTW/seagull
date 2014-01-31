@@ -30,7 +30,7 @@ defmodule Demo.MenuBar do
       from pid: ^pid do
         from widget: :frame do
           :close->
-            pid<-:destroy
+            send pid, :destroy
             continue=false
         end
         from widget: :file_menu do

@@ -43,7 +43,7 @@ defmodule WindowProcess do
       {:response_window, response, window}->response
       response->response
     end
-    pid<-{self(), id, func, response}
+    send pid, {self(), id, func, response}
     window
   end
 
