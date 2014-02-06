@@ -41,7 +41,7 @@ defmodule Compiler.Frame do
     end
     if destroy do
       my_pid=self
-      :wxEvtHandler.connect wxobject, :close_window, [callback: fn(_, _)-> my_pid<-:destroy end]
+      :wxEvtHandler.connect wxobject, :close_window, [callback: fn(_, _)-> send my_pid, :destroy end]
     end
   end
 
