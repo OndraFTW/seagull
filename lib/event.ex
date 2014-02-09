@@ -1,6 +1,7 @@
 defmodule Event do
 
   @event_groups [
+    menu_bar: [Event.MenuBar],
     menu: [Event.Menu],
     button: [Event.Button, Event.Mouse],
     text_box: [Event.TextBox, Event.Mouse],
@@ -51,6 +52,32 @@ defmodule Event do
         raise {:uknown_event, id, event}
       end
     end
+  end
+
+  defmacro generate_function_react() do
+  	IO.inspect(
+  	quote unquote: false do
+	  	lc {sg, wx} inlist @events do
+		  def react(data, unquote(sg)) do
+			:wxEvtHandler.connect Keyword.get(data, :wxobject), unquote(wx), [userData: {Keyword.get(data, :type), Keyword.get(data, :id)}]
+		    true
+		  end
+	  	end
+		def react(_data, _event), do: false
+	end)
+  end
+  
+  defmacro generate_function_dont_react() do
+  	IO.inspect(
+  	quote unquote: false do
+	  	lc {sg, wx} inlist @events do
+		  def dont_react(data, unquote(sg)) do
+			:wxEvtHandler.disconnect Keyword.get(data, :wxobject), unquote(wx)
+		    true
+		  end
+	  	end
+		def dont_react(_data, _event), do: false
+	end)
   end
 
   def get_widget_by_wx_ref([], _ref) do
