@@ -49,9 +49,9 @@ defmodule Demo.MenuBar do
           :close->IO.puts "Menu Help closed."
           :highlight, id->IO.puts "Menu Help highlight: #{id}."
         end
-      end
-      message do
-      	a->IO.inspect a
+        from widget: :menu_bar do
+          :select, id->IO.puts "Menu bar selected: #{id}."
+        end
       end
     end
     if continue, do: reaction pid
