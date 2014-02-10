@@ -14,15 +14,15 @@ defmodule Event.Menu do
   Event.generate_function_react()
   Event.generate_function_dont_react()
 
-  lc {sg, wx} inlist Keyword.delete(@events, :highlight) do
-    def translate(_wxid, _wxobject, id, unquote(sg), {_, unquote(wx)}, window) do
+  lc {sg, _wx} inlist Keyword.delete(@events, :highlight) do
+    def translate(_wxid, _wxobject, id, unquote(sg), _event, window) do
       widget=Keyword.get window, id
       pid=Keyword.get widget, :pid
       send pid, [self, id, unquote(sg)]
       true
     end
   end
-  def translate(wxid, _wxobject, id, :hightlight, {_, :menu_highlight}, window) do
+  def translate(wxid, _wxobject, id, :hightlight, _event, window) do
     if wxid != -1 do
       item=Event.get_widget_by_wx_ref window, wxid
       if item == nil do

@@ -12,8 +12,8 @@ defmodule Event.Button do
   Event.generate_function_react()
   Event.generate_function_dont_react()
 
-  lc {sg, wx} inlist @events do
-    def translate(_wxid, _wxobject, id, unquote(sg), {_, unquote(wx), _, _, _}, window) do
+  lc {sg, _wx} inlist @events do
+    def translate(_wxid, _wxobject, id, unquote(sg), _event, window) do
       widget=Keyword.get window, id
       pid=Keyword.get widget, :pid
       send pid, [self, id, unquote(sg)]
