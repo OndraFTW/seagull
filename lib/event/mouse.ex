@@ -1,4 +1,5 @@
 defmodule Event.Mouse do
+  require Event
 
   @events [
     mouse_left_down: :left_down,
@@ -24,20 +25,20 @@ defmodule Event.Mouse do
   Event.generate_function_dont_react()
 
   lc {sg, wx} inlist Keyword.delete(@events, :mouse_wheel) do
-    def translate(_wxid, _wxobject, id, {_, unquote(wx), x, y, _, _, _, _, _, _, _, _, _, _}, window) do
+    def translate(_wxid, _wxobject, id, unquote(sg), {_, unquote(wx), x, y, _, _, _, _, _, _, _, _, _, _}, window) do
       widget=Keyword.get window, id
       pid=Keyword.get widget, :pid
       send pid, [self, id, unquote(sg), {x, y}]
       true
     end
   end
-  def translate(_wxid, _wxobject, id, {_, :mousewheel, x, y, _, _, _, _, _, _, _, delta, _, _}, window) do
+  def translate(_wxid, _wxobject, id, :mouse_wheel, {_, :mousewheel, x, y, _, _, _, _, _, _, _, delta, _, _}, window) do
     widget=Keyword.get window, id
     pid=Keyword.get widget, :pid
     send pid, [self, id, :mouse_wheel, {x, y}, if(delta>0, do: :up, else: :down)]
     true
   end
-  def translate(_wxid, _wxobject, _id, _event, _window) do
+  def translate(_wxid, _wxobject, _id, _event_type, _event, _window) do
     false
   end
 

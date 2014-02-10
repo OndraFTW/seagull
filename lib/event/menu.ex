@@ -1,5 +1,6 @@
 defmodule Event.Menu do
-
+  require Event
+  
   @events [
       open: :menu_open,
       close: :menu_close,
@@ -14,14 +15,14 @@ defmodule Event.Menu do
   Event.generate_function_dont_react()
 
   lc {sg, wx} inlist Keyword.delete(@events, :highlight) do
-    def translate(_wxid, _wxobject, id, {_, unquote(wx)}, window) do
+    def translate(_wxid, _wxobject, id, unquote(sg), {_, unquote(wx)}, window) do
       widget=Keyword.get window, id
       pid=Keyword.get widget, :pid
       send pid, [self, id, unquote(sg)]
       true
     end
   end
-  def translate(wxid, _wxobject, id, {_, :menu_highlight}, window) do
+  def translate(wxid, _wxobject, id, :hightlight, {_, :menu_highlight}, window) do
     if wxid != -1 do
       item=Event.get_widget_by_wx_ref window, wxid
       if item == nil do
@@ -36,7 +37,7 @@ defmodule Event.Menu do
       true
     end
   end
-  def translate(_wxid, _wxobject, _id, _event, _window) do
+  def translate(_wxid, _wxobject, _id, _event_type, _event, _window) do
     false
   end
 

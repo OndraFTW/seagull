@@ -47,28 +47,26 @@ defmodule Event do
   end
 
   lc {widget, event_groups} inlist @event_groups do
-    def translate(wxid, wxobject, {unquote(widget), id}, event, window) do
-      if not Enum.any?(unquote(event_groups), fn(group)-> group.translate(wxid, wxobject, id, event, window) end) do
+    def translate(wxid, wxobject, {unquote(widget), id, event_type}, event, window) do
+      if not Enum.any?(unquote(event_groups), fn(group)-> group.translate(wxid, wxobject, id, event_type, event, window) end) do
         raise {:uknown_event, id, event}
       end
     end
   end
 
   defmacro generate_function_react() do
-  	IO.inspect(
   	quote unquote: false do
 	  	lc {sg, wx} inlist @events do
 		  def react(data, unquote(sg)) do
-			:wxEvtHandler.connect Keyword.get(data, :wxobject), unquote(wx), [userData: {Keyword.get(data, :type), Keyword.get(data, :id)}]
+			:wxEvtHandler.connect Keyword.get(data, :wxobject), unquote(wx), [userData: {Keyword.get(data, :type), Keyword.get(data, :id), unquote(sg)}]
 		    true
 		  end
 	  	end
 		def react(_data, _event), do: false
-	end)
+	end
   end
   
   defmacro generate_function_dont_react() do
-  	IO.inspect(
   	quote unquote: false do
 	  	lc {sg, wx} inlist @events do
 		  def dont_react(data, unquote(sg)) do
@@ -77,7 +75,7 @@ defmodule Event do
 		  end
 	  	end
 		def dont_react(_data, _event), do: false
-	end)
+	end
   end
 
   def get_widget_by_wx_ref([], _ref) do
