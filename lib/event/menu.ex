@@ -22,7 +22,7 @@ defmodule Event.Menu do
       true
     end
   end
-  def translate(wxid, _wxobject, id, :hightlight, _event, window) do
+  def translate(wxid, _wxobject, id, :highlight, _event, window) do
     if wxid != -1 do
       item=Event.get_widget_by_wx_ref window, wxid
       if item == nil do
