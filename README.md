@@ -53,12 +53,16 @@ Simple GUI library for Elixir language based on wxErlang.
             from widget: :button do
               :click->
                 label=get pid, :button, :label
-                count=Regex.run(%r/[0-9]+/, label) |> Enum.first |> binary_to_integer
+                count=Regex.run(%r/[0-9]+/, label) |> List.first |> binary_to_integer
                 count=count+1
                 label=Regex.replace %r/([0-9]+)/, label, integer_to_binary(count)
                 set pid, :button, :label, label
             end
-            from widget: :main_frame, do: (:close->pid<-:destroy;continue=false)
+            from widget: :main_frame do
+              :close->
+                send pid, :destroy
+                continue=false
+            end
           end
         end
         if continue, do: reaction(pid)
