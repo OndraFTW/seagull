@@ -34,7 +34,7 @@ defmodule Demo.TextBox do
         end
       end
     end
-    pid=WindowProcess.spawn f
+    pid=WindowProcess.spawn_gui f
     reaction pid
   end
 

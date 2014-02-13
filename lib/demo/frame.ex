@@ -13,7 +13,7 @@ defmodule Demo.Frame do
         button id: :status_button, label: "Status", react: [:click]
       end
     end
-    pid=WindowProcess.spawn f
+    pid=WindowProcess.spawn_gui f
     reaction pid
   end
 

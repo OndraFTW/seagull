@@ -20,7 +20,7 @@ defmodule Demo.PID do
       end
     end
 
-    gui_pid=WindowProcess.spawn f
+    gui_pid=WindowProcess.spawn_gui f
 
     IO.puts "Main process: #{pid_to_binary(self)}"
     IO.puts "GUI process:  #{pid_to_binary(gui_pid)}"

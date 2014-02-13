@@ -35,7 +35,7 @@ defmodule Demo.Calc do
         end
       end
     end
-    pid=WindowProcess.spawn f
+    pid=WindowProcess.spawn_gui f
     reaction pid, 0, :add
   end
 

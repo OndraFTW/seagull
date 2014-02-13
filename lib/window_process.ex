@@ -1,7 +1,9 @@
 defmodule WindowProcess do
   
   @doc"Spawns new GUI, which sends events to process pid."
-  def spawn(gui, pid//self()) do
+  def spawn_gui(gui), do: spawn_gui(gui, [])
+  def spawn_gui(gui, options) do
+    pid=Keyword.get options, :default_pid, self
     spawn WindowProcess, :gui_process, [gui, pid]
   end
 

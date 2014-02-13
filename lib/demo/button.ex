@@ -46,7 +46,7 @@ defmodule Demo.Button do
     end
 
     #start new GUI process with frame f
-    pid=WindowProcess.spawn f
+    pid=WindowProcess.spawn_gui f
     
     #react on messages from GUI process
     reaction pid

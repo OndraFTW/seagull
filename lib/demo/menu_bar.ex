@@ -19,7 +19,7 @@ defmodule Demo.MenuBar do
 
     f=frame id: :frame, menu_bar: mb, react: [:close]
     
-    pid=WindowProcess.spawn f
+    pid=WindowProcess.spawn_gui f
 
     reaction pid
 
