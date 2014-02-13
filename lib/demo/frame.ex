@@ -32,8 +32,8 @@ defmodule Demo.Frame do
         end
         from widget: :title_button do
           :click->
-            title=get pid, :frame, :title
-            set pid, :frame, :title, title<>"a"
+            title=send pid, :frame, :get_title
+            send pid, :frame, :set_title, title<>"a"
         end
         from widget: :maximize_button, do: (:click->send pid, :frame, :maximize)
         from widget: :minimize_button, do: (:click->send pid, :frame, :minimize)
