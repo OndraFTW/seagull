@@ -45,26 +45,26 @@ defmodule Widget do
   lc {widget, compulsory, children} inlist @widgets do
     case {compulsory, children} do
       {0, false}->
-        defmacro unquote(widget)(options//[]) do
+        defmacro unquote(widget)(options\\[]) do
           widget=unquote widget
           {idi, options}=do_id_options options
           quote do: {unquote(widget), {unquote(idi)}, unquote(options), []}
         end
       {0, true}->
-        defmacro unquote(widget)(options//[], children//[]) do
+        defmacro unquote(widget)(options\\[], children\\[]) do
           widget=unquote widget
           {options, children}=do_options_children options, children
           {idi, options}=do_id_options options
           quote do: {unquote(widget), {unquote(idi)}, unquote(options), unquote(children)}
         end
       {1, false}->
-        defmacro unquote(widget)(a, options//[]) do
+        defmacro unquote(widget)(a, options\\[]) do
           widget=unquote widget
           {idi, options}=do_id_options options
           quote do: {unquote(widget), {unquote(idi), unquote(a)}, unquote(options), []}
         end
       {1, true}->
-        defmacro unquote(widget)(a, options//[], children//[]) do
+        defmacro unquote(widget)(a, options\\[], children\\[]) do
           widget=unquote widget
           {options, children}=do_options_children options, children
           {idi, options}=do_id_options options

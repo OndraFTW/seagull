@@ -21,7 +21,7 @@ defmodule Compiler do
     end
   end
 
-  def compile({:frame, {id}, options, children}, pid//self) do
+  def compile({:frame, {id}, options, children}, pid) do
     Compiler.Frame.compile {id}, options, children, wxparent: :wx.null, pid: pid, parent: nil
   end
  
