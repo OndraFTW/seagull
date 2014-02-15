@@ -1,7 +1,7 @@
 #Parts of Seagull
 
 ##1. Defining window
-Macros in Widget transform GUI description DSL into tree of records.
+Macros in Widget transform GUI description DSL into tree of tuples.
 Example:
 
     #from this
