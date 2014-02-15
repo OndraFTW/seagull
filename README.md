@@ -12,7 +12,7 @@ Simple GUI library for Elixir language based on wxErlang.
         f=frame id: :main_frame, title: "Frame title" do
           button id: :button
         end
-        WindowProcess.spawn f
+        WindowProcess.spawn_gui f
       end
     end
 
@@ -27,7 +27,7 @@ Simple GUI library for Elixir language based on wxErlang.
             button id: :button2, label: "Second Button"
           end
         end
-        WindowProcess.spawn f
+        WindowProcess.spawn_gui f
       end
     end
 
@@ -42,7 +42,7 @@ Simple GUI library for Elixir language based on wxErlang.
         f=frame id: :main_frame, react: [:close] do
           button id: :button, label: "Number of clicks: 0.", react: [:click]
         end
-        pid=WindowProcess.spawn f
+        pid=WindowProcess.spawn_gui f
         reaction pid
       end
       
@@ -52,11 +52,11 @@ Simple GUI library for Elixir language based on wxErlang.
           from pid: ^pid do
             from widget: :button do
               :click->
-                label=get pid, :button, :label
+                label=send pid, :button, :get_label
                 count=Regex.run(%r/[0-9]+/, label) |> List.first |> binary_to_integer
                 count=count+1
                 label=Regex.replace %r/([0-9]+)/, label, integer_to_binary(count)
-                set pid, :button, :label, label
+                send pid, :button, :set_label, label
             end
             from widget: :main_frame do
               :close->
