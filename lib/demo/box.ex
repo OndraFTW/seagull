@@ -15,6 +15,7 @@ defmodule Demo.Box do
         box :horizontal, id: :hbox do
           button id: :prepend_button, label: "Prepend button", react: [:click]
           button id: :append_button, label: "Append button", react: [:click]
+          button id: :tree_button, label: "Print tree", react: [:click]
           button id: :prepend_line_button, label: "Prepend line", react: [:click]
           button id: :append_line_button, label: "Append line", react: [:click]
         end
@@ -38,6 +39,7 @@ defmodule Demo.Box do
         end
         from widget: :prepend_button, do: (:click->send(pid, :hbox, :prepend, button(label: "P")))
         from widget: :append_button,  do: (:click->send(pid, :hbox, :append, button(label: "A")))
+        from widget: :tree_button, do: (:click->IO.inspect(send(pid, :main_frame, :get_tree)))
         from widget: :prepend_line_button, do: (:click->send(pid, :vbox, :prepend, box(:horizontal, do: button(label: "PL"))))
         from widget: :append_line_button,  do: (:click->send(pid, :vbox, :append, box(:horizontal, do: button(label: "AL"))))
       end

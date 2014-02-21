@@ -8,41 +8,42 @@ defmodule WindowProcess do
   end
 
   @doc"GUI process."
-  def gui_process(frame, pid) do
+  def gui_process(tree, pid) do
     :wx.new
     #compile records into wxObjects
-    window=Compiler.compile(frame, pid)
-    [{_id, data}|_tail]=window
+    compiled=Compiler.compile(tree, pid)
+    [{_id, data}|_tail]=compiled
     :wxFrame.show Keyword.get(data, :wxobject)
-    rec(window, pid)
+    rec pid, {compiled, tree}
     :wx.destroy
   end
 
   # Receives message, sends response and calls itself.
-  defp rec(window, pid) do
+  defp rec(pid, window) do
     receive do
       :destroy->
         nil
       {pid, id, function, params}->
-        window=send window, pid, id, function, params
-        rec window, pid
+        window=respond window, pid, id, function, params
+        rec pid, window
       {:wx, id, object, data, event}->
-        Event.translate id, object, data, event, window
-        rec window, pid
+        Event.translate id, object, data, event, elem(window, 0)
+        rec pid, window
       a-> 
         IO.inspect a
-        rec window, pid
+        rec pid, window
     end
   end
 
   # Send response to message func for object id with params in to pid.
-  defp send(window, pid, id, func, params) do
-    object=Keyword.get(window, id, nil)
+  defp respond(window, pid, id, func, params) do
+    {compiled, _tree}=window
+    object=Keyword.get(compiled, id, nil)
     if object==nil, do: raise {:uknown_object, id}
     object=[{:window, window}|object]
-    response=respond(Keyword.get(object, :type), object, func, params)
+    response=get_response(Keyword.get(object, :type), object, func, params)
     response=case response do
-      {:response_window, response, window}->response
+      {:response_and_window, response, window}->response
       response->response
     end
     send pid, {self(), id, func, response}
@@ -58,8 +59,8 @@ defmodule WindowProcess do
 
   # Returns response to message func for object id with params in to pid.
   lc {type, class} inlist @classes do
-    defp respond(unquote(type), object, func, params), do: unquote(class).respond(object, func, params)
+    defp get_response(unquote(type), object, func, params), do: unquote(class).respond(object, func, params)
   end
-  defp respond(type, _object, _func, _params), do: raise {:uknown_type, type}
+  defp get_response(type, _object, _func, _params), do: raise {:uknown_type, type}
 
 end

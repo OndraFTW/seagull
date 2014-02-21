@@ -73,4 +73,47 @@ defmodule Widget do
     end
   end
 
+  def get_widget_from_tree({type, req, options, children}, id) when elem(req, 0)==id, do: {type, req, options, children}
+  def get_widget_from_tree({_type, _req, _options, []}, _id), do: nil
+  def get_widget_from_tree({_type, _req, _options, children}, id) do
+    get_widget_from_list children, id
+  end
+
+  defp get_widget_from_list([], _id), do: nil
+  defp get_widget_from_list([head|tail], id) do
+    r=get_widget_from_tree head, id
+    if r==nil do
+      get_widget_from_list tail, id
+    else
+      r
+    end
+  end
+
+  def modify_tree(tree, id, function) do
+    {true, new_tree}=modify_widget_in_tree tree, id, function
+    new_tree
+  end
+
+  defp modify_widget_in_tree({type, req, options, children}, id, function) when elem(req, 0)==id do
+    {true, function.({type, req, options, children})}
+  end
+  defp modify_widget_in_tree({type, req, options, []}, _id, _function) do
+    {false, {type, req, options, []}}
+  end
+  defp modify_widget_in_tree({type, req, options, children}, id, function) do
+    {r, new_children}=modify_widget_in_list children, id, function, []
+    {r, {type, req, options, new_children}}
+  end
+
+  defp modify_widget_in_list([], _id, _function, result) do
+    {false, Enum.reverse(result)}
+  end
+  defp modify_widget_in_list([head|tail], id, function, result) do
+    r=modify_widget_in_tree head, id, function
+    case r do
+      {true, widget}->{true, Enum.reverse(result)++[widget|tail]}
+      {false, widget}->modify_widget_in_list(tail, id, function, [widget|result])
+    end
+  end
+
 end
