@@ -43,7 +43,9 @@ defmodule WindowProcess do
     object=[{:window, window}|object]
     response=get_response(Keyword.get(object, :type), object, func, params)
     response=case response do
-      {:response_and_window, response, window}->response
+      {:response_and_window, response, new_window}->
+        window=new_window
+        response
       response->response
     end
     send pid, {self(), id, func, response}
