@@ -23,7 +23,7 @@ defmodule Demo.TextBox do
         end
         box :horizontal do
           text_box id: :left_box, react: [:update]
-          text_box id: :right_box, react: [:enter_pressed]
+          text_box id: :right_box, react: [:update]
         end
         box :horizontal do
           text_box multiline: true, size: {100, 100}, value: "This is\nmultiline\ntext box."
@@ -35,10 +35,10 @@ defmodule Demo.TextBox do
       end
     end
     pid=WindowProcess.spawn_gui f
-    reaction pid
+    reaction pid, {false, false, ""}
   end
 
-  defp reaction(pid) do
+  defp reaction(pid, {ignore_left, ignore_right, sync_value}) do
     continue=true
     receive_event do
       from pid: ^pid do
@@ -60,15 +60,27 @@ defmodule Demo.TextBox do
         end
         from widget: :left_box do
           :update, value->
-            send pid, :right_box, :set_value, value
+            if not ignore_left and sync_value != value do
+              sync_value=value
+              ignore_right=true
+              send pid, :right_box, :set_value, sync_value
+            else
+              ignore_left=false
+            end
         end
         from widget: :right_box do
-          :enter_pressed, value->
-            send pid, :left_box, :set_value, value
+          :update, value->
+            if not ignore_right and sync_value != value do
+              sync_value=value
+              ignore_left=true
+              send pid, :left_box, :set_value, sync_value
+            else
+              ignore_right=false
+            end
         end
       end
     end
-    if continue, do: reaction pid
+    if continue, do: reaction(pid, {ignore_left, ignore_right, sync_value})
   end
 
 end
