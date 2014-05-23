@@ -68,9 +68,9 @@ defmodule Demo.Button do
         from widget: :count_button do
           :click->
             label=send pid, :count_button, :get_label
-            count=Regex.run(%r/[0-9]+/, label) |> List.first |> binary_to_integer
+            count=Regex.run(~r/[0-9]+/, label) |> List.first |> binary_to_integer
             count=count+1
-            label=Regex.replace %r/([0-9]+)/, label, integer_to_binary(count)
+            label=Regex.replace ~r/([0-9]+)/, label, integer_to_binary(count)
             send pid, :count_button, :set_label, label
         end
         from widget: :grow_button do

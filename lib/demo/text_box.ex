@@ -53,9 +53,9 @@ defmodule Demo.TextBox do
         from widget: :count_button do
           :click->
             text=send pid, :count_box, :get_value
-            count=Regex.run(%r/[0-9]+/, text) |> List.first |> binary_to_integer
+            count=Regex.run(~r/[0-9]+/, text) |> List.first |> binary_to_integer
             count=count+1
-            text=Regex.replace %r/([0-9]+)/, text, integer_to_binary(count)
+            text=Regex.replace ~r/([0-9]+)/, text, integer_to_binary(count)
             send pid, :count_box, :set_value, text
         end
         from widget: :left_box do
