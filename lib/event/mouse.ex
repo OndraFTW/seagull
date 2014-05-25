@@ -24,7 +24,7 @@ defmodule Event.Mouse do
   Event.generate_function_react()
   Event.generate_function_dont_react()
 
-  lc {sg, wx} inlist Keyword.delete(@events, :mouse_wheel) do
+  for {sg, wx} <- Keyword.delete(@events, :mouse_wheel) do
     def translate(_wxid, _wxobject, id, unquote(sg), {_, unquote(wx), x, y, _, _, _, _, _, _, _, _, _, _}, window) do
       widget=Keyword.get window, id
       pid=Keyword.get widget, :pid

@@ -13,7 +13,7 @@ defmodule Event.TextBox do
   Event.generate_function_react()
   Event.generate_function_dont_react()
 
-  lc {sg, wx} inlist @events do
+  for {sg, wx} <- @events do
     def translate(_wxid, _wxobject, id, unquote(sg), {_, unquote(wx), value, _, _}, window) do
       widget=Keyword.get window, id
       pid=Keyword.get widget, :pid

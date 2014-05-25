@@ -15,7 +15,7 @@ defmodule Compiler do
     menu_item: Compiler.MenuItem
   ]
 
-  lc {widget, module} inlist @widgets do
+  for {widget, module} <- @widgets do
     def compile_child({unquote(widget), compulsory, options, children}, data) do
       unquote(module).compile(compulsory, options, children, data)
     end

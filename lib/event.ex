@@ -23,7 +23,7 @@ defmodule Event do
     end
   end
 
-  lc {widget, event_groups} inlist @event_groups do
+  for {widget, event_groups} <- @event_groups do
     def react(unquote(widget), data, event) do
       Enum.any?(unquote(event_groups), fn(group)-> group.react(data, event) end)
     end
@@ -40,13 +40,13 @@ defmodule Event do
     end
   end
 
-  lc {widget, event_groups} inlist @event_groups do
+  for {widget, event_groups} <- @event_groups do
     def dont_react(unquote(widget), data, event) do
       Enum.any?(unquote(event_groups), fn(group)-> group.dont_react(data, event) end)
     end
   end
 
-  lc {widget, event_groups} inlist @event_groups do
+  for {widget, event_groups} <- @event_groups do
     def translate(wxid, wxobject, {unquote(widget), id, event_type}, event, window) do
       if not Enum.any?(unquote(event_groups), fn(group)-> group.translate(wxid, wxobject, id, event_type, event, window) end) do
         raise {:uknown_event, id, event}
@@ -56,7 +56,7 @@ defmodule Event do
 
   defmacro generate_function_react() do
   	quote unquote: false do
-	  	lc {sg, wx} inlist @events do
+	  	for {sg, wx} <- @events do
 		  def react(data, unquote(sg)) do
 			:wxEvtHandler.connect Keyword.get(data, :wxobject), unquote(wx), [userData: {Keyword.get(data, :type), Keyword.get(data, :id), unquote(sg)}]
 		    true
@@ -68,7 +68,7 @@ defmodule Event do
   
   defmacro generate_function_dont_react() do
   	quote unquote: false do
-	  	lc {sg, wx} inlist @events do
+	  	for {sg, wx} <- @events do
 		  def dont_react(data, unquote(sg)) do
 			:wxEvtHandler.disconnect Keyword.get(data, :wxobject), unquote(wx)
 		    true

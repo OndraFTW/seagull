@@ -42,7 +42,7 @@ defmodule Widget do
     {:menu_item, 1, false}
   ]
 
-  lc {widget, compulsory, children} inlist @widgets do
+  for {widget, compulsory, children} <- @widgets do
     case {compulsory, children} do
       {0, false}->
         defmacro unquote(widget)(options\\[]) do

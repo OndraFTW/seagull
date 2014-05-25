@@ -60,7 +60,7 @@ defmodule WindowProcess do
   ]
 
   # Returns response to message func for object id with params in to pid.
-  lc {type, class} inlist @classes do
+  for {type, class} <- @classes do
     defp get_response(unquote(type), object, func, params), do: unquote(class).respond(object, func, params)
   end
   defp get_response(type, _object, _func, _params), do: raise {:uknown_type, type}

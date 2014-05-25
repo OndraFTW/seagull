@@ -14,7 +14,7 @@ defmodule Event.Menu do
   Event.generate_function_react()
   Event.generate_function_dont_react()
 
-  lc {sg, _wx} inlist Keyword.delete(@events, :highlight) do
+  for {sg, _wx} <- Keyword.delete(@events, :highlight) do
     def translate(_wxid, _wxobject, id, unquote(sg), _event, window) do
       widget=Keyword.get window, id
       pid=Keyword.get widget, :pid
