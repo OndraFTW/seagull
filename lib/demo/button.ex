@@ -47,7 +47,7 @@ defmodule Demo.Button do
 
     #start new GUI process with frame f
     pid=WindowProcess.spawn_gui f
-    
+
     #react on messages from GUI process
     reaction pid
 
@@ -68,9 +68,9 @@ defmodule Demo.Button do
         from widget: :count_button do
           :click->
             label=send pid, :count_button, :get_label
-            count=Regex.run(~r/[0-9]+/, label) |> List.first |> binary_to_integer
+            count=Regex.run(~r/[0-9]+/, label) |> List.first |> String.to_integer
             count=count+1
-            label=Regex.replace ~r/([0-9]+)/, label, integer_to_binary(count)
+            label=Regex.replace ~r/([0-9]+)/, label, to_string(count)
             send pid, :count_button, :set_label, label
         end
         from widget: :grow_button do
@@ -78,12 +78,12 @@ defmodule Demo.Button do
             {w, h}=send pid, :grow_button, :get_size
             send pid, :grow_button, :set_size, {w+1, h+1}
         end
-        from widget: :activation_button do 
+        from widget: :activation_button do
           :click->
             send pid, :button, :react, :click
             send pid, :button, :set_label, "This button\nreacts on clicks."
         end
-         from widget: :deactivation_button do 
+         from widget: :deactivation_button do
           :click->
             send pid, :button, :dont_react, :click
             send pid, :button, :set_label, "This button\ndont reacts on clicks."

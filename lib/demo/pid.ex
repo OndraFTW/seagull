@@ -1,5 +1,5 @@
 defmodule Demo.PID do
-  
+
   import Widget
   import Seagull
 
@@ -37,7 +37,7 @@ defmodule Demo.PID do
             send gui_pid, :destroy
             Enum.each pids, fn(pid)-> send pid, :end end
         end
-        from widget: :D do 
+        from widget: :D do
           :click->
             IO.puts "#{pid_to_binary(self)}: Clicked D."
             reaction gui_pid, pids
@@ -50,9 +50,9 @@ defmodule Demo.PID do
   def f(widget) do
     receive_event do
       from pid: _pid do
-        from widget: ^widget do 
+        from widget: ^widget do
           :click->
-            IO.puts "#{pid_to_binary(self)}: Clicked #{atom_to_binary(widget)}."
+            IO.puts "#{pid_to_binary(self)}: Clicked #{to_string(widget)}."
             f widget
         end
       end
