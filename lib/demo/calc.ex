@@ -57,7 +57,7 @@ defmodule Demo.Calc do
         from widget: w do
           :click->
             if Enum.member?([:add, :sub, :mul, :div, :eq], w) do
-              value=send(pid, :display, :get_value) |> binary_to_integer
+              value=send(pid, :display, :get_value) |> String.to_integer
               acc=case op do
                 :add->acc+value
                 :sub->acc-value
@@ -65,7 +65,7 @@ defmodule Demo.Calc do
                 :div->if value==0, do: 0, else: div(acc, value)
               end
               if w == :eq do
-                send pid, :display, :set_value, integer_to_binary(acc)
+                send pid, :display, :set_value, to_string(acc)
                 acc=0
                 op=:add
               else
@@ -73,7 +73,7 @@ defmodule Demo.Calc do
                 op=w
               end
             else
-              value=concat_numbers send(pid, :display, :get_value), (w |> atom_to_binary |> String.last)
+              value=concat_numbers send(pid, :display, :get_value), (w |> to_string |> String.last)
               send pid, :display, :set_value, value
             end
         end

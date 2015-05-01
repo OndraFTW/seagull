@@ -24,9 +24,9 @@ defmodule Compiler do
   def compile({:frame, {id}, options, children}, pid) do
     Compiler.Frame.compile {id}, options, children, wxparent: :wx.null, pid: pid, parent: nil
   end
- 
+
   def random_id() do
-    :random.uniform(4294967295) |> integer_to_binary |> binary_to_atom
+    :random.uniform(4294967295) |> to_string |> String.to_atom
   end
 
   def fuse_styles(list), do: fuse_styles(list, 0, [])
